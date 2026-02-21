@@ -6,14 +6,13 @@
   <style>
     body {
       margin: 0;
-      height: 100vh;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       background: white;
       font-family: Helvetica, Arial, sans-serif;
-      font-size: 20px;
       color: black;
       letter-spacing: 0.5px;
       text-align: center;
@@ -21,7 +20,27 @@
 
     img {
       width: 120px;
-      margin-bottom: 5px;
+      margin-bottom: 15px;
+    }
+
+    .question {
+      font-size: 20px;
+      margin-bottom: 40px;
+    }
+
+    .links {
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+
+    .links a {
+      text-decoration: none;
+      color: black;
+      margin: 0 15px;
+    }
+
+    .links a:hover {
+      opacity: 0.5;
     }
   </style>
 </head>
@@ -29,7 +48,20 @@
 
   <img src="sello.png" alt="Sello personal">
 
-  trace oneself
+  <div class="question">
+    trace oneself
+  </div>
+
+  <div class="links">
+    <a href="#">ARCHIVE</a>
+    <a href="#">YOUTUBE CHANNEL</a>
+    <a href="#">XDXTXRXXL</a>
+  </div>
+
+  <div class="links">
+    <a href="#">BIO</a>
+    <a href="#">CONTACT</a>
+  </div>
 
 </body>
 </html>
