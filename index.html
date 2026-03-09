@@ -1,68 +1,242 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>José María Rubio</title>
-  <style>
-    body {
-      margin: 0;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      background: white;
-      font-family: Helvetica, Arial, sans-serif;
-      color: black;
-      letter-spacing: 0.5px;
-      text-align: center;
+let rot1;
+let rot2;
+
+let labels1 = ["Bio", "Contact", "Portafolio"];
+let labels2 = ["Apresto", "Lab", "XDXTXRXXL", "Archivo"];
+
+let dragging = false;
+let activeRing = 0;
+let prevMouseX = 0;
+
+// BASE DE DATOS DE CONTENIDO
+let contentDB = {};
+
+function setup() {
+
+  createCanvas(600, 600);
+
+  textAlign(CENTER, CENTER);
+  textSize(16);
+
+  // CONFIGURACIÓN INICIAL
+  // Bio + Archivo
+
+  rot1 = 0;
+
+  let step2 = TWO_PI / labels2.length;
+  rot2 = step2 * 3;
+
+}
+
+function draw() {
+
+  background(220);
+
+  let cx = width / 2;
+  let cy = height / 2;
+
+  drawRing(cx, cy, 140, 200, labels1, rot1);
+  drawRing(cx, cy, 200, 260, labels2, rot2);
+
+  // centro
+  stroke(0);
+  fill(235);
+  circle(cx, cy, 120);
+
+  drawPointer(cx, cy);
+
+  let idx1 = getIndex(rot1, labels1.length);
+  let idx2 = getIndex(rot2, labels2.length);
+
+  let a = labels1[idx1];
+  let b = labels2[idx2];
+
+  let combinacion = a + " + " + b;
+
+  fill(0);
+  noStroke();
+  textSize(24);
+  text(combinacion, cx, 40);
+
+  drawContent(a, b, cx, cy);
+
+}
+
+function drawContent(a, b, cx, cy) {
+
+  let key = a + "|" + b;
+
+  let item = contentDB[key];
+
+  if (!item) {
+
+    fill(0);
+    textSize(14);
+    text("Sin contenido todavía", cx, cy);
+    return;
+
+  }
+
+  if (item.type == "text") {
+
+    fill(0);
+    text(item.value, cx, cy);
+
+  }
+
+  if (item.type == "image") {
+
+    imageMode(CENTER);
+    image(item.value, cx, cy, 100, 100);
+
+  }
+
+}
+
+function drawRing(cx, cy, rInner, rOuter, labels, rot) {
+
+  let n = labels.length;
+  let step = TWO_PI / n;
+
+  push();
+
+  translate(cx, cy);
+  rotate(rot);
+
+  stroke(0);
+  noFill();
+
+  circle(0, 0, rOuter * 2);
+  circle(0, 0, rInner * 2);
+
+  for (let i = 0; i < n; i++) {
+
+    let a = i * step;
+
+    line(
+      rInner * cos(a),
+      rInner * sin(a),
+      rOuter * cos(a),
+      rOuter * sin(a)
+    );
+
+    let mid = a + step / 2;
+
+    let rText = (rInner + rOuter) / 2;
+
+    let x = rText * cos(mid);
+    let y = rText * sin(mid);
+
+    push();
+
+    translate(x, y);
+    rotate(mid + HALF_PI);
+
+    noStroke();
+    fill(0);
+
+    text(labels[i], 0, 0);
+
+    pop();
+
+  }
+
+  pop();
+
+}
+
+function drawPointer(cx, cy) {
+
+  push();
+
+  translate(cx, cy);
+
+  fill(0);
+  noStroke();
+
+  triangle(
+    0, -280,
+    -10, -260,
+    10, -260
+  );
+
+  pop();
+
+}
+
+function getIndex(rot, n) {
+
+  let step = TWO_PI / n;
+
+  let r = (rot % TWO_PI + TWO_PI) % TWO_PI;
+
+  return floor(r / step);
+
+}
+
+function mousePressed() {
+
+  let cx = width / 2;
+  let cy = height / 2;
+
+  let d = dist(mouseX, mouseY, cx, cy);
+
+  if (d > 140 && d < 200) {
+
+    activeRing = 1;
+    dragging = true;
+
+  }
+
+  if (d > 200 && d < 260) {
+
+    activeRing = 2;
+    dragging = true;
+
+  }
+
+  prevMouseX = mouseX;
+
+}
+
+function mouseDragged() {
+
+  if (dragging) {
+
+    let delta = mouseX - prevMouseX;
+
+    if (activeRing == 1) {
+
+      rot1 += delta * 0.01;
+
     }
 
-    img {
-      width: 120px;
-      margin-bottom: 5px;
+    if (activeRing == 2) {
+
+      rot2 += delta * 0.01;
+
     }
 
-    .question {
-      font-size: 20px;
-      margin-bottom: 40px;
-    }
+    prevMouseX = mouseX;
 
-    .links {
-      font-size: 11px;
-      margin-bottom: 20px;
-    }
+  }
 
-    .links a {
-      text-decoration: none;
-      color: black;
-      margin: 0 15px;
-    }
+}
 
-    .links a:hover {
-      opacity: 0.5;
-    }
-  </style>
-</head>
-<body>
+function mouseReleased() {
 
-  <img src="sello.png" alt="Sello personal">
+  dragging = false;
 
-  <div class="question">
-    trace oneself
-  </div>
+  snapRings();
 
-  <div class="links">
-    <a href="#">ARCHIVE</a>
-    <a href="#">LAB</a>
-    <a href="https://josemariarubio.github.io/xdxtxrxxl">XDXTXRXXL</a>
-    <a href="https://josemariarubio.github.io/xdxtxrxxl">APRESTO</a>
-  </div>
+}
 
-  <div class="links">
-    <a href="#">BIO</a>
-    <a href="#">CONTACT</a>
-  </div>
+function snapRings() {
 
-</body>
-</html>
+  let step1 = TWO_PI / labels1.length;
+  let step2 = TWO_PI / labels2.length;
+
+  rot1 = round(rot1 / step1) * step1;
+  rot2 = round(rot2 / step2) * step2;
+
+}
