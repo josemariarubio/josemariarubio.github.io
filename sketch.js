@@ -199,7 +199,28 @@ prevAngle = atan2(mouseY-cy, mouseX-cx);
 
 }
 
-function mouseDragged(){
+let prevAngle=0;
+
+function mousePressed(){
+
+let cx=width/2;
+let cy=height/2;
+
+let d=dist(mouseX,mouseY,cx,cy);
+
+if(d>150 && d<220){
+activeRing=1;
+dragging=true;
+}
+
+if(d>220 && d<300){
+activeRing=2;
+dragging=true;
+}
+
+prevAngle = atan2(mouseY-cy, mouseX-cx);
+
+}
 
 if(dragging){
 
