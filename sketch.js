@@ -176,6 +176,8 @@ return floor(r/step);
 
 }
 
+let prevAngle=0;
+
 function mousePressed(){
 
 let cx=width/2;
@@ -193,7 +195,7 @@ activeRing=2;
 dragging=true;
 }
 
-prevMouseX=mouseX;
+prevAngle = atan2(mouseY-cy, mouseX-cx);
 
 }
 
