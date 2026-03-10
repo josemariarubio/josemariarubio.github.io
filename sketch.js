@@ -165,9 +165,12 @@ pop();
 
 function getIndex(rot,n){
 
-let step=TWO_PI/n;
+let step = TWO_PI/n;
 
-let r=(rot%TWO_PI+TWO_PI)%TWO_PI;
+let r = (rot % TWO_PI + TWO_PI) % TWO_PI;
+
+// compensación para el puntero superior
+r = (r + step/2) % TWO_PI;
 
 return floor(r/step);
 
