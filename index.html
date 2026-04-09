@@ -10,9 +10,9 @@
   <style>
     body {
       margin: 0;
-      background: white;
       font-family: Arial, sans-serif;
-      overflow-x: hidden;
+      overflow: hidden;
+      background: white;
     }
 
     /* BARRA SUPERIOR */
@@ -29,31 +29,27 @@
       align-items: center;
     }
 
-    /* SELLO */
     .firma img {
       height: 40px;
       margin-bottom: 8px;
     }
 
-    /* MENÚ */
     .menu {
       display: flex;
       gap: 40px;
     }
 
     .menu a {
-      text-decoration: none;
-      color: black;
       font-size: 10px;
       letter-spacing: 2px;
-      cursor: pointer;
+      text-decoration: none;
+      color: black;
     }
 
     .menu a:hover {
       opacity: 0.5;
     }
 
-    /* CANVAS */
     #canvas-container {
       position: absolute;
       top: 80px;
@@ -84,125 +80,93 @@
 
   <!-- SCRIPT -->
   <script>
-    let offset = 0;
-    let mode = "default";
+    let camX = 0;
+    let camY = 0;
 
     function setup() {
       let canvas = createCanvas(windowWidth, windowHeight - 80);
       canvas.parent("canvas-container");
-      setupMenuInteractions();
     }
 
     function draw() {
-      background(255);
-      stroke(0);
-      noFill();
-      strokeWeight(1);
+      background(230, 255, 230); // verde tipo pasto
 
-      offset += 0.01;
-
-      if (mode === "xdxtxrxxl") drawShirt();
-      else if (mode === "lab") drawPeople();
-      else if (mode === "apresto") drawShower();
-      else if (mode === "archive") drawMemoryWheel();
-      else drawLandscape();
-    }
-
-    /* ===== PAISAJE BASE ===== */
-    function drawLandscape() {
-      drawLine(0.01, 40, offset);
-      drawLine(0.02, 60, offset + 2);
-      drawLine(0.03, 80, offset + 4);
-    }
-
-    function drawLine(scale, amplitude, t) {
-      beginShape();
-      for (let x = 0; x < width; x += 10) {
-        let y = height / 2 + sin(x * scale + t) * amplitude;
-        vertex(x, y);
-      }
-      endShape();
-    }
-
-    /* ===== CAMISETA ===== */
-    function drawShirt() {
-      let cx = width / 2;
-      let cy = height / 2;
-
-      rectMode(CENTER);
-      rect(cx, cy, 120, 150);
-      rect(cx - 80, cy - 30, 60, 60);
-      rect(cx + 80, cy - 30, 60, 60);
-      ellipse(cx, cy - 70, 40, 20);
-    }
-
-    /* ===== PERSONAS ===== */
-    function drawPeople() {
-      let t = frameCount * 0.05;
-
-      for (let i = -2; i <= 2; i++) {
-        let x = width / 2 + i * 60;
-        let y = height / 2;
-
-        line(x, y, x, y + 50);
-        ellipse(x, y - 20, 15);
-
-        line(x, y, x + sin(t + i) * 20, y + 20);
-        line(x, y, x - sin(t + i) * 20, y + 20);
-      }
-    }
-
-    /* ===== DUCHA ===== */
-    function drawShower() {
-      let cx = width / 2;
-      let cy = height / 2;
-
-      line(cx, cy, cx, cy + 60);
-      ellipse(cx, cy - 20, 20);
-
-      line(cx - 40, cy - 80, cx + 20, cy - 80);
-      line(cx + 20, cy - 80, cx + 20, cy - 40);
-
-      for (let i = 0; i < 10; i++) {
-        let x = cx + 20 + random(-5, 5);
-        let y = cy - 40 + i * 10;
-        line(x, y, x, y + 5);
-      }
-    }
-
-    /* ===== RUEDA MEMORIA ===== */
-    function drawMemoryWheel() {
-      let cx = width / 2;
-      let cy = height / 2;
+      // cámara con mouse
+      camX = lerp(camX, mouseX - width / 2, 0.05);
+      camY = lerp(camY, mouseY - height / 2, 0.05);
 
       push();
-      translate(cx, cy);
-      rotate(frameCount * 0.01);
+      translate(-camX, -camY);
 
-      for (let r = 50; r <= 150; r += 30) {
-        ellipse(0, 0, r * 2);
-      }
+      drawField();
 
-      for (let i = 0; i < 12; i++) {
-        let angle = TWO_PI * i / 12;
-        line(0, 0, cos(angle) * 150, sin(angle) * 150);
-      }
+      // estructuras
+      drawDome(width/2 - 300, height/2);
+      drawShop(width/2 + 300, height/2);
+      drawDojo(width/2, height/2 + 300);
+      drawObservatory(width/2, height/2 - 300);
 
       pop();
     }
 
-    /* ===== INTERACCIÓN ===== */
-    function setupMenuInteractions() {
-      let links = document.querySelectorAll(".menu a");
+    /* CAMPO */
+    function drawField() {
+      stroke(0, 40);
+      for (let i = 0; i < 200; i++) {
+        let x = random(width * 2) - width;
+        let y = random(height * 2) - height;
+        line(x, y, x, y + 10);
+      }
+    }
 
-      links[0].onmouseover = () => mode = "xdxtxrxxl";
-      links[1].onmouseover = () => mode = "lab";
-      links[2].onmouseover = () => mode = "apresto";
-      links[3].onmouseover = () => mode = "archive";
+    /* DOMO */
+    function drawDome(x, y) {
+      push();
+      translate(x, y);
+      noFill();
+      stroke(0);
 
-      links.forEach(link => {
-        link.onmouseout = () => mode = "default";
-      });
+      arc(0, 0, 150, 150, PI, TWO_PI);
+      line(-75, 0, 75, 0);
+
+      pop();
+    }
+
+    /* VITRINA */
+    function drawShop(x, y) {
+      push();
+      translate(x, y);
+      rectMode(CENTER);
+
+      rect(0, 0, 120, 80);
+      line(-60, -20, 60, -20);
+
+      pop();
+    }
+
+    /* DOJO */
+    function drawDojo(x, y) {
+      push();
+      translate(x, y);
+
+      rectMode(CENTER);
+      rect(0, 0, 140, 80);
+
+      line(-80, -40, 0, -80);
+      line(80, -40, 0, -80);
+
+      pop();
+    }
+
+    /* OBSERVATORIO */
+    function drawObservatory(x, y) {
+      push();
+      translate(x, y);
+
+      ellipse(0, 0, 120);
+      line(0, 0, 60, -60);
+
+      pop();
     }
 
     function windowResized() {
