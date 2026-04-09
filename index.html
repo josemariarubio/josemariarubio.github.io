@@ -4,16 +4,19 @@
   <meta charset="UTF-8">
   <title>José María Rubio</title>
 
+  <!-- P5 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script>
+
   <style>
+    /* RESET */
     body {
       margin: 0;
       background: white;
-      height: 200vh;
-      padding-top: 90px;
       font-family: Arial, sans-serif;
+      overflow-x: hidden;
     }
 
-    /* BARRA */
+    /* BARRA SUPERIOR */
     .barra {
       position: fixed;
       top: 0;
@@ -27,14 +30,13 @@
       align-items: center;
     }
 
-    /* SELLO ARRIBA */
+    /* SELLO */
     .firma img {
       height: 40px;
-      width: auto;
       margin-bottom: 8px;
     }
 
-    /* MENÚ DEBAJO */
+    /* MENÚ */
     .menu {
       display: flex;
       gap: 40px;
@@ -50,13 +52,21 @@
     .menu a:hover {
       opacity: 0.5;
     }
+
+    /* CONTENEDOR DEL CANVAS */
+    #canvas-container {
+      position: absolute;
+      top: 80px;
+      left: 0;
+      width: 100%;
+    }
   </style>
 </head>
 
 <body>
 
+  <!-- BARRA -->
   <div class="barra">
-
     <div class="firma">
       <img src="sello.png" alt="firma">
     </div>
@@ -67,8 +77,52 @@
       <a href="#">APRESTO</a>
       <a href="#">ARCHIVE</a>
     </div>
-
   </div>
+
+  <!-- CANVAS -->
+  <div id="canvas-container"></div>
+
+  <!-- SCRIPT -->
+  <script>
+    let offset = 0;
+
+    function setup() {
+      let canvas = createCanvas(windowWidth, windowHeight - 80);
+      canvas.parent("canvas-container");
+    }
+
+    function draw() {
+      background(255);
+
+      stroke(0);
+      noFill();
+      strokeWeight(1);
+
+      offset += 0.01;
+
+      // CAPA 1 (suave)
+      drawLine(0.01, 40, offset);
+
+      // CAPA 2 (media)
+      drawLine(0.02, 60, offset + 2);
+
+      // CAPA 3 (más dinámica)
+      drawLine(0.03, 80, offset + 4);
+    }
+
+    function drawLine(scale, amplitude, t) {
+      beginShape();
+      for (let x = 0; x < width; x += 10) {
+        let y = height / 2 + sin(x * scale + t) * amplitude;
+        vertex(x, y);
+      }
+      endShape();
+    }
+
+    function windowResized() {
+      resizeCanvas(windowWidth, windowHeight - 80);
+    }
+  </script>
 
 </body>
 </html>
