@@ -27,28 +27,28 @@
       align-items: center;
     }
 
-    /* MENÚ ARRIBA */
+    /* SELLO ARRIBA */
+    .firma img {
+      height: 40px;
+      width: auto;
+      margin-bottom: 8px;
+    }
+
+    /* MENÚ DEBAJO */
     .menu {
       display: flex;
       gap: 40px;
-      margin-bottom: 8px;
     }
 
     .menu a {
       text-decoration: none;
       color: black;
-      font-size: 10px; /* más pequeño */
+      font-size: 10px;
       letter-spacing: 2px;
     }
 
     .menu a:hover {
       opacity: 0.5;
-    }
-
-    /* SELLO */
-    .firma img {
-      height: 40px; /* tamaño anterior */
-      width: auto;
     }
   </style>
 </head>
@@ -57,15 +57,15 @@
 
   <div class="barra">
 
+    <div class="firma">
+      <img src="sello.png" alt="firma">
+    </div>
+
     <div class="menu">
       <a href="#">XDXTXRXXL</a>
       <a href="#">LABORATORY</a>
       <a href="#">APRESTO</a>
       <a href="#">ARCHIVE</a>
-    </div>
-
-    <div class="firma">
-      <img src="sello.png" alt="firma">
     </div>
 
   </div>
