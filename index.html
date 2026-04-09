@@ -8,32 +8,63 @@
     body {
       margin: 0;
       background: white;
-      height: 200vh; /* solo para probar scroll */
+      height: 200vh; /* para probar scroll */
+      padding-top: 80px; /* evita que el contenido quede debajo de la barra */
+      font-family: Arial, sans-serif;
     }
 
-    /* CONTENEDOR FIJO ARRIBA */
-    .firma {
+    /* BARRA SUPERIOR */
+    .barra {
       position: fixed;
       top: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      padding: 10px 0;
+      left: 0;
+      width: 100%;
       background: white;
       z-index: 1000;
+      padding: 10px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
-    /* IMAGEN PEQUEÑA */
+    /* FIRMA */
     .firma img {
-      height: 40px; /* ajusta esto */
-      width: auto;
+      height: 30px;
+      margin-bottom: 8px;
+    }
+
+    /* MENÚ */
+    .menu {
+      display: flex;
+      gap: 40px;
+    }
+
+    .menu a {
+      text-decoration: none;
+      color: black;
+      font-size: 12px;
+      letter-spacing: 2px;
+    }
+
+    .menu a:hover {
+      opacity: 0.5;
     }
   </style>
 </head>
 
 <body>
 
-  <div class="firma">
-    <img src="sello.png" alt="firma">
+  <div class="barra">
+    <div class="firma">
+      <img src="sello.png" alt="firma">
+    </div>
+
+    <div class="menu">
+      <a href="#">XDXTXRXXL</a>
+      <a href="#">LABORATORY</a>
+      <a href="#">APRESTO</a>
+      <a href="#">ARCHIVE</a>
+    </div>
   </div>
 
 </body>
