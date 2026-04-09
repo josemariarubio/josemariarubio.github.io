@@ -8,12 +8,12 @@
     body {
       margin: 0;
       background: white;
-      height: 200vh; /* para probar scroll */
-      padding-top: 80px; /* evita que el contenido quede debajo de la barra */
+      height: 200vh;
+      padding-top: 90px;
       font-family: Arial, sans-serif;
     }
 
-    /* BARRA SUPERIOR */
+    /* BARRA */
     .barra {
       position: fixed;
       top: 0;
@@ -27,27 +27,28 @@
       align-items: center;
     }
 
-    /* FIRMA */
-    .firma img {
-      height: 30px;
-      margin-bottom: 8px;
-    }
-
-    /* MENÚ */
+    /* MENÚ ARRIBA */
     .menu {
       display: flex;
       gap: 40px;
+      margin-bottom: 8px;
     }
 
     .menu a {
       text-decoration: none;
       color: black;
-      font-size: 12px;
+      font-size: 10px; /* más pequeño */
       letter-spacing: 2px;
     }
 
     .menu a:hover {
       opacity: 0.5;
+    }
+
+    /* SELLO */
+    .firma img {
+      height: 40px; /* tamaño anterior */
+      width: auto;
     }
   </style>
 </head>
@@ -55,9 +56,6 @@
 <body>
 
   <div class="barra">
-    <div class="firma">
-      <img src="sello.png" alt="firma">
-    </div>
 
     <div class="menu">
       <a href="#">XDXTXRXXL</a>
@@ -65,6 +63,11 @@
       <a href="#">APRESTO</a>
       <a href="#">ARCHIVE</a>
     </div>
+
+    <div class="firma">
+      <img src="sello.png" alt="firma">
+    </div>
+
   </div>
 
 </body>
