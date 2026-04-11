@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <title>José María Rubio</title>
 
-  <!-- p5 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script>
 
   <style>
@@ -27,24 +26,20 @@
       position: relative;
       z-index: 10;
       width: 100%;
-      padding: 60px 0;
+      padding: 80px 0;
       display: flex;
       flex-direction: column;
       align-items: center;
     }
 
     .firma img {
-      height: 40px;
-      margin-bottom: 25px;
+      height: 60px; /* más grande */
+      margin-bottom: 30px;
       filter: invert(1);
     }
 
     .top-menu {
-      display: flex;
-      gap: 25px;
-      margin-bottom: 25px;
-      flex-wrap: wrap;
-      justify-content: center;
+      margin-bottom: 30px;
     }
 
     .top-menu a {
@@ -56,11 +51,11 @@
 
     .menu {
       display: flex;
-      gap: 60px;
+      gap: 80px;
     }
 
     .menu a {
-      font-size: 11px;
+      font-size: 12px;
       letter-spacing: 3px;
       text-decoration: none;
       color: white;
@@ -75,92 +70,118 @@
 
 <body>
 
-  <!-- CANVAS -->
-  <div id="canvas-container"></div>
+<div id="canvas-container"></div>
 
-  <!-- CONTENIDO -->
-  <div class="barra">
+<div class="barra">
 
-    <div class="firma">
-      <img src="sello.png" alt="firma">
-    </div>
-
-    <div class="top-menu">
-      <a href="#">BIO</a>
-      <a href="#">CONTACTO</a>
-      <a href="#">IG</a>
-      <a href="#">YOUTUBE</a>
-      <a href="mailto:tuemail@gmail.com">CORREO</a>
-      <a href="https://wa.me/57XXXXXXXXXX">WHATSAPP</a>
-    </div>
-
-    <div class="menu">
-      <a>XDXTXRXXL</a>
-      <a>ART PRACTICE</a>
-      <a>ART LABORATORY</a>
-    </div>
-
+  <div class="firma">
+    <img src="sello.png">
   </div>
 
-  <!-- SCRIPT -->
-  <script>
-    let mode = "none";
-    let glow = 0;
+  <div class="top-menu">
+    <a href="#">BIO</a>
+  </div>
 
-    function setup() {
-      let canvas = createCanvas(windowWidth, windowHeight);
-      canvas.parent("canvas-container");
+  <div class="menu">
+    <a>ART PRACTICE</a>
+    <a>STUDIO</a>
+    <a>XDXTXRXXL</a>
+  </div>
 
-      setupMenu();
-    }
+</div>
 
-    function draw() {
-      clear();
+<script>
+let mode = "none";
+let t = 0;
 
-      glow = lerp(glow, mode === "none" ? 0 : 1, 0.05);
+function setup() {
+  let canvas = createCanvas(windowWidth, windowHeight);
+  canvas.parent("canvas-container");
 
-      // izquierda → XDXTXRXXL
-      drawDoor(width * 0.25, height * 0.6, mode === "xdx" ? glow : 0);
+  setupMenu();
+}
 
-      // centro → ART PRACTICE
-      drawDoor(width * 0.5, height * 0.6, mode === "art" ? glow : 0);
+function draw() {
+  clear();
+  t += 0.02;
 
-      // derecha → ART LABORATORY
-      drawDoor(width * 0.75, height * 0.6, mode === "lab" ? glow : 0);
-    }
+  if (mode === "practice") drawConeLight();
+  if (mode === "studio") drawDoor();
+  if (mode === "xdx") drawMannequin();
+}
 
-    function drawDoor(x, y, g) {
-      if (g <= 0.01) return;
+/* ===== ART PRACTICE → LUZ CONO ===== */
+function drawConeLight() {
+  noStroke();
+  for (let i = 0; i < 50; i++) {
+    fill(255, 5);
+    triangle(
+      width/2, height*0.2,
+      width/2 - i*10, height*0.8,
+      width/2 + i*10, height*0.8
+    );
+  }
+}
 
-      let w = 120;
-      let h = 220;
+/* ===== STUDIO → PUERTA ===== */
+function drawDoor() {
+  let x = width/2;
+  let y = height*0.6;
 
-      stroke(255, 200 * g);
-      noFill();
-      rectMode(CENTER);
-      rect(x, y, w, h);
+  stroke(255);
+  noFill();
+  rectMode(CENTER);
 
-      noStroke();
-      fill(255, 60 * g);
-      rect(x, y, w - 10, h - 10);
-    }
+  rect(x, y, 120, 220);
 
-    function setupMenu() {
-      let links = document.querySelectorAll(".menu a");
+  fill(255, 40);
+  noStroke();
+  rect(x, y, 100, 200);
+}
 
-      links[0].onmouseover = () => mode = "xdx";
-      links[1].onmouseover = () => mode = "art";
-      links[2].onmouseover = () => mode = "lab";
+/* ===== XDXTXRXXL → MANIQUI ===== */
+function drawMannequin() {
+  let cx = width/2;
+  let cy = height*0.5;
 
-      links.forEach(link => {
-        link.onmouseout = () => mode = "none";
-      });
-    }
+  stroke(255);
+  noFill();
 
-    function windowResized() {
-      resizeCanvas(windowWidth, windowHeight);
-    }
-  </script>
+  // cabeza
+  ellipse(cx, cy - 80, 30);
+
+  // torso
+  line(cx, cy - 60, cx, cy + 40);
+
+  // brazos
+  line(cx, cy - 30, cx - 40, cy);
+  line(cx, cy - 30, cx + 40, cy);
+
+  // piernas
+  line(cx, cy + 40, cx - 20, cy + 100);
+  line(cx, cy + 40, cx + 20, cy + 100);
+
+  // efecto holograma (parpadeo leve)
+  stroke(255, 100 + sin(t*5)*50);
+}
+
+/* ===== INTERACCIÓN ===== */
+function setupMenu() {
+  let links = document.querySelectorAll(".menu a");
+
+  links[0].onmouseover = () => mode = "practice";
+  links[1].onmouseover = () => mode = "studio";
+  links[2].onmouseover = () => mode = "xdx";
+
+  links.forEach(link => {
+    link.onmouseout = () => mode = "none";
+  });
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+}
+</script>
 
 </body>
 </html>
