@@ -10,10 +10,36 @@
       background: black;
       color: white;
       font-family: Arial, sans-serif;
+      overflow: hidden;
     }
 
-    /* CONTENEDOR GENERAL */
+    /* FONDO GIF */
+    .background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: url('estrellas.gif') no-repeat center center;
+      background-size: cover;
+      z-index: -2;
+    }
+
+    /* CAPA OSCURA (mejora legibilidad) */
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.3);
+      z-index: -1;
+    }
+
+    /* CONTENIDO */
     .barra {
+      position: relative;
+      z-index: 10;
       width: 100%;
       padding: 40px 0;
       display: flex;
@@ -25,7 +51,7 @@
     .firma img {
       height: 40px;
       margin-bottom: 20px;
-      filter: invert(1); /* vuelve blanco el sello si es negro */
+      filter: invert(1);
     }
 
     /* MENU SUPERIOR */
@@ -44,10 +70,6 @@
       color: white;
     }
 
-    .top-menu a:hover {
-      opacity: 0.5;
-    }
-
     /* MENU PRINCIPAL */
     .menu {
       display: flex;
@@ -62,7 +84,8 @@
       cursor: pointer;
     }
 
-    .menu a:hover {
+    /* HOVER */
+    a:hover {
       opacity: 0.5;
     }
   </style>
@@ -70,6 +93,13 @@
 
 <body>
 
+  <!-- FONDO -->
+  <div class="background"></div>
+
+  <!-- OVERLAY -->
+  <div class="overlay"></div>
+
+  <!-- CONTENIDO -->
   <div class="barra">
 
     <div class="firma">
