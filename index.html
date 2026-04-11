@@ -129,11 +129,14 @@ function draw() {
   clear();
   t += 0.02;
 
-  drawBase();
+  if (mode === "xdx") {
+    drawXBackground();
+  } else {
+    drawBase();
+  }
 
   if (mode === "munman") drawMunman();
   if (mode === "art") drawPapers();
-  if (mode === "xdx") drawXFlow();
 
   drawCenterObject();
 }
@@ -153,7 +156,22 @@ function drawBase() {
   }
 }
 
-/* ===== CAMPOS ===== */
+/* ===== MUNMAN ===== */
+function drawMunman() {
+  stroke(255, 40);
+  noFill();
+
+  for (let y = 0; y < height; y += 25) {
+    beginShape();
+    for (let x = 0; x < width; x += 25) {
+      let offset = sin(x * 0.02 + t * 5) * 15;
+      vertex(x, y + offset);
+    }
+    endShape();
+  }
+}
+
+/* ===== ART PRACTICE ===== */
 function drawPapers() {
   noFill();
   stroke(255, 120);
@@ -176,29 +194,17 @@ function drawPapers() {
   }
 }
 
-function drawXFlow() {
-  stroke(255, 120);
+/* ===== XDXTXRXXL FONDO ===== */
+function drawXBackground() {
+  stroke(255, 80);
 
-  let spacing = 12;
+  let spacing = 30;
 
-  for (let i = 0; i < width; i += spacing) {
-    let y = (i + t * 200) % height;
-    line(i, y, i + 200, y + 200);
-    line(i, y, i - 200, y + 200);
-  }
-}
+  for (let i = -width; i < width * 2; i += spacing) {
+    let offset = (t * 200) % spacing;
 
-function drawMunman() {
-  stroke(255, 30);
-  noFill();
-
-  for (let y = 0; y < height; y += 25) {
-    beginShape();
-    for (let x = 0; x < width; x += 25) {
-      let offset = sin(x * 0.02 + t * 5) * 15;
-      vertex(x, y + offset);
-    }
-    endShape();
+    line(i - offset, 0, i + height - offset, height);
+    line(i - offset, height, i + height - offset, 0);
   }
 }
 
@@ -210,28 +216,32 @@ function drawCenterObject() {
 
   push();
   translate(x, y);
-  rotate(t * 0.5);
 
   stroke(255);
   strokeWeight(2);
+  noFill();
 
   if (mode === "munman") {
-    noFill();
-    triangle(-40, 40, 40, 40, 0, -40);
+    // círculo flotante
+    ellipse(0, sin(t * 3) * 30, 60);
   } 
   else if (mode === "art") {
-    noFill();
-    ellipse(0, 0, 80);
+    // rectángulo hoja
+    rotate(sin(t) * 0.3);
+    rect(-20, -40, 40, 80);
   } 
   else if (mode === "xdx") {
-    noFill();
-    line(-40, -40, 40, 40);
-    line(40, -40, -40, 40);
+    // X pulsante
+    let s = 40 + sin(t * 3) * 20;
+
+    line(-s, -s, s, s);
+    line(s, -s, -s, s);
   } 
   else {
+    // base
     noStroke();
     fill(0);
-    ellipse(0, 0, 90); // círculo negro sólido
+    ellipse(0, 0, 90);
   }
 
   pop();
@@ -257,4 +267,3 @@ function windowResized() {
 
 </body>
 </html>
-
