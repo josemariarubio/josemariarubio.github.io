@@ -210,24 +210,34 @@ function drawCenterObject() {
 
   push();
   translate(x, y);
-  rotate(t);
+  rotate(t * 0.5);
 
   stroke(255);
-  noFill();
   strokeWeight(2);
+  noFill();
 
   if (mode === "munman") {
-    ellipse(0, 0, 80);
+    // V
+    line(-30, -30, 0, 40);
+    line(30, -30, 0, 40);
   } 
   else if (mode === "art") {
-    triangle(-40, 40, 40, 40, 0, -40);
+    // O
+    ellipse(0, 0, 80);
   } 
   else if (mode === "xdx") {
+    // X
     line(-40, -40, 40, 40);
     line(40, -40, -40, 40);
   } 
   else {
-    ellipse(0, 0, 60); // estado base
+    // muñeco de palos
+    ellipse(0, -40, 20); // cabeza
+    line(0, -30, 0, 30); // torso
+    line(0, -10, -20, 10); // brazo izq
+    line(0, -10, 20, 10); // brazo der
+    line(0, 30, -15, 60); // pierna izq
+    line(0, 30, 15, 60); // pierna der
   }
 
   pop();
