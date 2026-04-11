@@ -47,4 +47,188 @@
 
     .barra-bottom {
       position: fixed;
-      bottom
+      bottom: 0;
+      width: 100%;
+      padding: 30px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 10;
+    }
+
+    .bottom-menu {
+      display: flex;
+      gap: 30px;
+      margin-bottom: 15px;
+    }
+
+    .bottom-menu a {
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: white;
+      text-decoration: none;
+    }
+
+    .firma-bottom img {
+      height: 40px;
+      filter: invert(1);
+    }
+
+    a:hover {
+      opacity: 0.5;
+    }
+  </style>
+</head>
+
+<body>
+
+<div id="canvas-container"></div>
+
+<div class="barra-top">
+  <div class="menu">
+    <a>MUNMAN</a>
+    <a>ART PRACTICE</a>
+    <a>XDXTXRXXL</a>
+  </div>
+</div>
+
+<div class="barra-bottom">
+  <div class="bottom-menu">
+    <a>BIO</a>
+    <a>CONTACT</a>
+  </div>
+  <div class="firma-bottom">
+    <img src="sello.png">
+  </div>
+</div>
+
+<script>
+let mode = "base";
+let t = 0;
+let papers = [];
+
+function setup() {
+  let canvas = createCanvas(windowWidth, windowHeight);
+  canvas.parent("canvas-container");
+
+  // crear hojas
+  for (let i = 0; i < 80; i++) {
+    papers.push({
+      x: random(width),
+      y: random(height),
+      size: random(10, 30),
+      speed: random(0.5, 2),
+      drift: random(-1, 1),
+      rot: random(TWO_PI)
+    });
+  }
+
+  setupMenu();
+}
+
+function draw() {
+  clear();
+  t += 0.02;
+
+  drawBase();
+
+  if (mode === "munman") drawMunman();
+  if (mode === "art") drawPapers();
+  if (mode === "xdx") drawXFlow();
+}
+
+/* BASE */
+function drawBase() {
+  stroke(255, 40);
+
+  let spacing = 40;
+
+  for (let x = 0; x < width; x += spacing) {
+    line(x, 0, x, height);
+  }
+
+  for (let y = 0; y < height; y += spacing) {
+    line(0, y, width, y);
+  }
+}
+
+/* ART PRACTICE → HOJAS */
+function drawPapers() {
+  noFill();
+  stroke(255, 120);
+
+  for (let p of papers) {
+
+    push();
+    translate(p.x, p.y);
+    rotate(p.rot);
+
+    rect(0, 0, p.size, p.size * 1.4);
+
+    pop();
+
+    p.y += p.speed;
+    p.x += p.drift;
+    p.rot += 0.01;
+
+    if (p.y > height) {
+      p.y = -20;
+      p.x = random(width);
+    }
+  }
+}
+
+/* XDXTXRXXL → X */
+function drawXFlow() {
+  stroke(255, 120);
+
+  let spacing = 12;
+
+  // diagonal 1
+  for (let i = 0; i < width; i += spacing) {
+    let y = (i + t * 200) % height;
+    line(i, y, i + 200, y + 200);
+  }
+
+  // diagonal 2
+  for (let i = 0; i < width; i += spacing) {
+    let y = (i + t * 200) % height;
+    line(i, y, i - 200, y + 200);
+  }
+}
+
+/* MUNMAN */
+function drawMunman() {
+  stroke(255, 30);
+  noFill();
+
+  for (let y = 0; y < height; y += 25) {
+    beginShape();
+    for (let x = 0; x < width; x += 25) {
+      let offset = sin(x * 0.02 + t * 5) * 15;
+      vertex(x, y + offset);
+    }
+    endShape();
+  }
+}
+
+/* INTERACCIÓN */
+function setupMenu() {
+  let links = document.querySelectorAll(".menu a");
+
+  links[0].onmouseover = () => mode = "munman";
+  links[1].onmouseover = () => mode = "art";
+  links[2].onmouseover = () => mode = "xdx";
+
+  links.forEach(link => {
+    link.onmouseout = () => mode = "base";
+  });
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+}
+</script>
+
+</body>
+</html>
