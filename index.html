@@ -33,7 +33,7 @@
     }
 
     .firma img {
-      height: 60px; /* más grande */
+      height: 60px;
       margin-bottom: 30px;
       filter: invert(1);
     }
@@ -51,7 +51,7 @@
 
     .menu {
       display: flex;
-      gap: 80px;
+      gap: 120px;
     }
 
     .menu a {
@@ -84,7 +84,6 @@
 
   <div class="menu">
     <a>ART PRACTICE</a>
-    <a>STUDIO</a>
     <a>XDXTXRXXL</a>
   </div>
 
@@ -105,64 +104,43 @@ function draw() {
   clear();
   t += 0.02;
 
-  if (mode === "practice") drawConeLight();
-  if (mode === "studio") drawDoor();
-  if (mode === "xdx") drawMannequin();
+  // izquierda → ART PRACTICE
+  if (mode === "practice") drawConeLight(width * 0.3);
+
+  // derecha → XDXTXRXXL
+  if (mode === "xdx") drawMannequin(width * 0.7);
 }
 
-/* ===== ART PRACTICE → LUZ CONO ===== */
-function drawConeLight() {
+/* ===== LUZ CONO ===== */
+function drawConeLight(x) {
   noStroke();
+
   for (let i = 0; i < 50; i++) {
     fill(255, 5);
     triangle(
-      width/2, height*0.2,
-      width/2 - i*10, height*0.8,
-      width/2 + i*10, height*0.8
+      x, height * 0.2,
+      x - i * 10, height * 0.8,
+      x + i * 10, height * 0.8
     );
   }
 }
 
-/* ===== STUDIO → PUERTA ===== */
-function drawDoor() {
-  let x = width/2;
-  let y = height*0.6;
+/* ===== MANIQUI ===== */
+function drawMannequin(x) {
+  let cy = height * 0.5;
 
-  stroke(255);
-  noFill();
-  rectMode(CENTER);
-
-  rect(x, y, 120, 220);
-
-  fill(255, 40);
-  noStroke();
-  rect(x, y, 100, 200);
-}
-
-/* ===== XDXTXRXXL → MANIQUI ===== */
-function drawMannequin() {
-  let cx = width/2;
-  let cy = height*0.5;
-
-  stroke(255);
-  noFill();
-
-  // cabeza
-  ellipse(cx, cy - 80, 30);
-
-  // torso
-  line(cx, cy - 60, cx, cy + 40);
-
-  // brazos
-  line(cx, cy - 30, cx - 40, cy);
-  line(cx, cy - 30, cx + 40, cy);
-
-  // piernas
-  line(cx, cy + 40, cx - 20, cy + 100);
-  line(cx, cy + 40, cx + 20, cy + 100);
-
-  // efecto holograma (parpadeo leve)
   stroke(255, 100 + sin(t*5)*50);
+  noFill();
+
+  ellipse(x, cy - 80, 30);
+
+  line(x, cy - 60, x, cy + 40);
+
+  line(x, cy - 30, x - 40, cy);
+  line(x, cy - 30, x + 40, cy);
+
+  line(x, cy + 40, x - 20, cy + 100);
+  line(x, cy + 40, x + 20, cy + 100);
 }
 
 /* ===== INTERACCIÓN ===== */
@@ -170,8 +148,7 @@ function setupMenu() {
   let links = document.querySelectorAll(".menu a");
 
   links[0].onmouseover = () => mode = "practice";
-  links[1].onmouseover = () => mode = "studio";
-  links[2].onmouseover = () => mode = "xdx";
+  links[1].onmouseover = () => mode = "xdx";
 
   links.forEach(link => {
     link.onmouseout = () => mode = "none";
