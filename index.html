@@ -22,44 +22,65 @@
       z-index: 0;
     }
 
-    .barra {
-      position: relative;
-      z-index: 10;
+    /* ===== BARRA SUPERIOR ===== */
+    .barra-top {
+      position: fixed;
+      top: 0;
       width: 100%;
-      padding: 80px 0;
+      padding: 30px 0;
       display: flex;
       flex-direction: column;
       align-items: center;
+      z-index: 10;
     }
 
-    .firma img {
-      height: 60px;
-      margin-bottom: 30px;
+    .firma-top img {
+      height: 40px;
+      margin-bottom: 20px;
       filter: invert(1);
-    }
-
-    .top-menu {
-      margin-bottom: 30px;
-    }
-
-    .top-menu a {
-      font-size: 11px;
-      letter-spacing: 2px;
-      text-decoration: none;
-      color: white;
     }
 
     .menu {
       display: flex;
-      gap: 120px;
+      gap: 80px;
     }
 
     .menu a {
-      font-size: 12px;
-      letter-spacing: 3px;
-      text-decoration: none;
+      font-size: 10px;
+      letter-spacing: 2px;
       color: white;
+      text-decoration: none;
       cursor: pointer;
+    }
+
+    /* ===== BARRA INFERIOR ===== */
+    .barra-bottom {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      padding: 30px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 10;
+    }
+
+    .bottom-menu {
+      display: flex;
+      gap: 30px;
+      margin-bottom: 15px;
+    }
+
+    .bottom-menu a {
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: white;
+      text-decoration: none;
+    }
+
+    .firma-bottom img {
+      height: 30px;
+      filter: invert(1);
     }
 
     a:hover {
@@ -72,26 +93,40 @@
 
 <div id="canvas-container"></div>
 
-<div class="barra">
+<!-- SUPERIOR -->
+<div class="barra-top">
 
-  <div class="firma">
+  <div class="firma-top">
     <img src="sello.png">
   </div>
 
-  <div class="top-menu">
-    <a href="#">BIO</a>
+  <div class="menu">
+    <a>ART</a>
+    <a>XDXTXRXXL</a>
+    <a>ORACLE</a>
   </div>
 
-  <div class="menu">
-    <a>ART PRACTICE</a>
-    <a>XDXTXRXXL</a>
+</div>
+
+<!-- INFERIOR -->
+<div class="barra-bottom">
+
+  <div class="bottom-menu">
+    <a>BIO</a>
+    <a>CONTACT</a>
+  </div>
+
+  <div class="firma-bottom">
+    <img src="sello.png">
   </div>
 
 </div>
 
 <script>
 let mode = "none";
-let t = 0;
+let flash = 0;
+let light = 0;
+let distort = 0;
 
 function setup() {
   let canvas = createCanvas(windowWidth, windowHeight);
@@ -102,53 +137,65 @@ function setup() {
 
 function draw() {
   clear();
-  t += 0.02;
 
-  // izquierda → ART PRACTICE
-  if (mode === "practice") drawConeLight(width * 0.3);
+  flash = lerp(flash, mode === "xdx" ? 1 : 0, 0.1);
+  light = lerp(light, mode === "art" ? 1 : 0, 0.1);
+  distort = lerp(distort, mode === "oracle" ? 1 : 0, 0.1);
 
-  // derecha → XDXTXRXXL
-  if (mode === "xdx") drawMannequin(width * 0.7);
+  drawFlash();
+  drawLight();
+  drawDistortion();
 }
 
-/* ===== LUZ CONO ===== */
-function drawConeLight(x) {
+/* ===== FLASH FOTO ===== */
+function drawFlash() {
+  if (flash < 0.01) return;
+
+  noStroke();
+  fill(255, 200 * flash);
+  rect(0, 0, width, height);
+}
+
+/* ===== LUZ TECHO ===== */
+function drawLight() {
+  if (light < 0.01) return;
+
   noStroke();
 
-  for (let i = 0; i < 50; i++) {
-    fill(255, 5);
+  for (let i = 0; i < 60; i++) {
+    fill(255, 4 * light);
     triangle(
-      x, height * 0.2,
-      x - i * 10, height * 0.8,
-      x + i * 10, height * 0.8
+      width / 2, 0,
+      width / 2 - i * 15, height,
+      width / 2 + i * 15, height
     );
   }
 }
 
-/* ===== MANIQUI ===== */
-function drawMannequin(x) {
-  let cy = height * 0.5;
+/* ===== DISTORSIÓN ===== */
+function drawDistortion() {
+  if (distort < 0.01) return;
 
-  stroke(255, 100 + sin(t*5)*50);
+  stroke(255, 40 * distort);
   noFill();
 
-  ellipse(x, cy - 80, 30);
-
-  line(x, cy - 60, x, cy + 40);
-
-  line(x, cy - 30, x - 40, cy);
-  line(x, cy - 30, x + 40, cy);
-
-  line(x, cy + 40, x - 20, cy + 100);
-  line(x, cy + 40, x + 20, cy + 100);
+  for (let y = 0; y < height; y += 20) {
+    beginShape();
+    for (let x = 0; x < width; x += 20) {
+      let offset = sin(x * 0.05 + frameCount * 0.1) * 10 * distort;
+      vertex(x, y + offset);
+    }
+    endShape();
+  }
 }
 
 /* ===== INTERACCIÓN ===== */
 function setupMenu() {
   let links = document.querySelectorAll(".menu a");
 
-  links[0].onmouseover = () => mode = "practice";
+  links[0].onmouseover = () => mode = "art";
   links[1].onmouseover = () => mode = "xdx";
+  links[2].onmouseover = () => mode = "oracle";
 
   links.forEach(link => {
     link.onmouseout = () => mode = "none";
