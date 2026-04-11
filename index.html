@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>José María Rubio</title>
 
-  <!-- p5 con WEBGL -->
+  <!-- p5 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script>
 
   <style>
@@ -99,69 +99,53 @@
   </div>
 
   <script>
-    let t = 0;
     let mode = "none";
+    let glow = 0;
 
     function setup() {
-      let canvas = createCanvas(windowWidth, windowHeight, WEBGL);
+      let canvas = createCanvas(windowWidth, windowHeight);
       canvas.parent("canvas-container");
 
-      noStroke();
       setupMenu();
     }
 
     function draw() {
-      t += 0.01;
+      clear();
 
-      shaderEffect();
-      drawDoor();
+      glow = lerp(glow, mode === "none" ? 0 : 1, 0.05);
+
+      // izquierda
+      drawDoor(width * 0.25, height * 0.6, mode === "xdx" ? glow : 0);
+
+      // centro
+      drawDoor(width * 0.5, height * 0.6, mode === "art" ? glow : 0);
+
+      // derecha
+      drawDoor(width * 0.75, height * 0.6, mode === "apresto" ? glow : 0);
     }
 
-    /* ===== LIQUIDO REALISTA ===== */
-    function shaderEffect() {
-      resetMatrix();
-      translate(-width/2, -height/2);
+    function drawDoor(x, y, g) {
+      if (g <= 0.01) return;
 
-      loadPixels();
+      let w = 120;
+      let h = 220;
 
-      for (let x = 0; x < width; x += 4) {
-        for (let y = 0; y < height; y += 4) {
-
-          let nx = x + sin(y * 0.02 + t) * 10;
-          let ny = y + cos(x * 0.02 + t) * 10;
-
-          let c = color(0);
-          set(x, y, c);
-        }
-      }
-
-      updatePixels();
-    }
-
-    /* ===== PUERTA ===== */
-    function drawDoor() {
-      if (mode === "none") return;
-
-      resetMatrix();
-      translate(0, 0);
-
-      stroke(255);
+      stroke(255, 200 * g);
       noFill();
       rectMode(CENTER);
+      rect(x, y, w, h);
 
-      rect(width/2, height/2, 120, 220);
-
-      fill(255, 60);
       noStroke();
-      rect(width/2, height/2, 100, 200);
+      fill(255, 60 * g);
+      rect(x, y, w - 10, h - 10);
     }
 
     function setupMenu() {
       let links = document.querySelectorAll(".menu a");
 
-      links[0].onmouseover = () => mode = "a";
-      links[1].onmouseover = () => mode = "b";
-      links[2].onmouseover = () => mode = "c";
+      links[0].onmouseover = () => mode = "xdx";
+      links[1].onmouseover = () => mode = "art";
+      links[2].onmouseover = () => mode = "apresto";
 
       links.forEach(link => {
         link.onmouseout = () => mode = "none";
