@@ -35,14 +35,12 @@
       align-items: center;
     }
 
-    /* SELLO */
     .firma img {
       height: 40px;
       margin-bottom: 25px;
       filter: invert(1);
     }
 
-    /* MENU SUPERIOR */
     .top-menu {
       display: flex;
       gap: 25px;
@@ -58,7 +56,6 @@
       color: white;
     }
 
-    /* MENU PRINCIPAL */
     .menu {
       display: flex;
       gap: 60px;
@@ -80,14 +77,11 @@
 
 <body>
 
-  <!-- CANVAS -->
   <div id="canvas-container"></div>
 
-  <!-- CONTENIDO -->
   <div class="barra">
-
     <div class="firma">
-      <img src="sello.png" alt="firma">
+      <img src="sello.png">
     </div>
 
     <div class="top-menu">
@@ -95,8 +89,8 @@
       <a href="#">CONTACTO</a>
       <a href="#">IG</a>
       <a href="#">YOUTUBE</a>
-      <a href="mailto:tuemail@gmail.com">CORREO</a>
-      <a href="https://wa.me/57XXXXXXXXXX">WHATSAPP</a>
+      <a href="#">CORREO</a>
+      <a href="#">WHATSAPP</a>
     </div>
 
     <div class="menu">
@@ -104,13 +98,11 @@
       <a>ART PRACTICE</a>
       <a>APRESTO</a>
     </div>
-
   </div>
 
-  <!-- SCRIPT -->
   <script>
     let mode = "none";
-    let glow = 0;
+    let t = 0;
 
     function setup() {
       let canvas = createCanvas(windowWidth, windowHeight);
@@ -121,45 +113,51 @@
 
     function draw() {
       clear();
+      t += 0.01;
 
-      stroke(255);
+      drawLiquid();
+      drawDoor();
+    }
+
+    /* ===== EFECTO AGUA ===== */
+    function drawLiquid() {
+      stroke(255, 20);
       noFill();
-      strokeWeight(2);
 
-      // animación suave
-      glow = lerp(glow, mode === "none" ? 0 : 1, 0.05);
-
-      if (mode !== "none") {
-        drawDoor(width / 2, height / 2, glow);
+      for (let y = 0; y < height; y += 20) {
+        beginShape();
+        for (let x = 0; x < width; x += 20) {
+          let offset = sin(x * 0.01 + t) * 10 + cos(y * 0.01 + t) * 10;
+          vertex(x, y + offset);
+        }
+        endShape();
       }
     }
 
-    function drawDoor(x, y, g) {
-      let w = 120;
-      let h = 220;
+    /* ===== PUERTA ===== */
+    function drawDoor() {
+      if (mode === "none") return;
 
-      // marco
-      stroke(255, 200 * g);
-      rectMode(CENTER);
-      rect(x, y, w, h);
+      let cx = width / 2;
+      let cy = height / 2;
 
-      // luz interior
-      noStroke();
-      fill(255, 80 * g);
-      rect(x, y, w - 10, h - 10);
-
-      // brillo exterior
-      stroke(255, 100 * g);
+      stroke(255);
       noFill();
-      rect(x, y, w + 20 * g, h + 40 * g);
+      rectMode(CENTER);
+
+      rect(cx, cy, 120, 220);
+
+      fill(255, 50);
+      noStroke();
+      rect(cx, cy, 100, 200);
     }
 
     function setupMenu() {
       let links = document.querySelectorAll(".menu a");
 
-      links[0].onmouseover = () => mode = "xdxtxrxxl";
-      links[1].onmouseover = () => mode = "art";
-      links[2].onmouseover = () => mode = "apresto";
+      links[0].onmouseover = () => mode = "a";
+      links[1].onmouseover = () => mode = "b";
+      links[2].onmouseover = () => mode = "c";
 
       links.forEach(link => {
         link.onmouseout = () => mode = "none";
