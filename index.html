@@ -88,7 +88,7 @@
 <div class="barra-top">
   <div class="menu">
     <a>MUNMAN</a>
-    <a>ART</a>
+    <a>ARTPRACTICE</a>
     <a>XDXTXRXXL</a>
   </div>
 </div>
@@ -106,9 +106,7 @@
 
 <script>
 let mode = "none";
-let flash = 0;
-let ray = 0;
-let grid = 0;
+let t = 0;
 
 function setup() {
   let canvas = createCanvas(windowWidth, windowHeight);
@@ -119,63 +117,65 @@ function setup() {
 
 function draw() {
   clear();
+  t += 0.02;
 
-  flash = lerp(flash, mode === "munman" ? 1 : 0, 0.1);
-  ray = lerp(ray, mode === "xdx" ? 1 : 0, 0.2);
-  grid = lerp(grid, mode === "art" ? 1 : 0, 0.05);
-
-  drawMunman();
-  drawRay();
-  drawGrid();
+  if (mode === "munman") drawMunman();
+  if (mode === "art") drawCartesian();
+  if (mode === "xdx") drawWeave();
 }
 
-/* ===== MUNMAN → DISTORSIÓN SUAVE ===== */
+/* ===== MUNMAN → CAMPO ===== */
 function drawMunman() {
-  if (flash < 0.01) return;
-
-  stroke(255, 40 * flash);
+  stroke(255, 40);
   noFill();
 
   for (let y = 0; y < height; y += 25) {
     beginShape();
     for (let x = 0; x < width; x += 25) {
-      let offset = sin(x * 0.03 + frameCount * 0.1) * 10 * flash;
+      let offset = sin(x * 0.03 + frameCount * 0.1) * 10;
       vertex(x, y + offset);
     }
     endShape();
   }
 }
 
-/* ===== XDXTXRXXL → RAYO ===== */
-function drawRay() {
-  if (ray < 0.05) return;
-
-  stroke(255, 200 * ray);
-  strokeWeight(2);
-
-  let x = random(width);
-
-  line(x, 0, x + random(-20,20), height);
-
-  // desaparece rápido
-  ray *= 0.6;
-}
-
-/* ===== ART → RETÍCULA ===== */
-function drawGrid() {
-  if (grid < 0.01) return;
-
-  stroke(255, 60 * grid);
-  noFill();
+/* ===== ARTPRACTICE → PLANO CARTESIANO ===== */
+function drawCartesian() {
+  stroke(255, 60);
+  strokeWeight(1);
 
   let spacing = 40;
 
-  for (let i = -width; i < width; i += spacing) {
-    line(width/2 + i, height, width/2 + i*0.3, height*0.3);
+  for (let x = 0; x < width; x += spacing) {
+    let offset = sin(t + x * 0.01) * 5;
+    line(x, 0, x, height + offset);
   }
 
-  for (let j = 0; j < height; j += spacing) {
-    line(0, j, width, j * 0.7);
+  for (let y = 0; y < height; y += spacing) {
+    let offset = cos(t + y * 0.01) * 5;
+    line(0, y, width, y + offset);
+  }
+}
+
+/* ===== XDXTXRXXL → TELAR ===== */
+function drawWeave() {
+  stroke(255, 80);
+  strokeWeight(1);
+
+  let spacing = 20;
+
+  for (let y = 0; y < height; y += spacing) {
+    for (let x = 0; x < width; x += spacing) {
+
+      let wave = sin(t + x * 0.1 + y * 0.1);
+
+      if ((x + y) % (spacing * 2) === 0) {
+        line(x, y, x + spacing, y + wave * 5);
+      } else {
+        line(x, y + wave * 5, x + spacing, y);
+      }
+
+    }
   }
 }
 
