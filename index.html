@@ -17,3 +17,159 @@
     }
 
     /* CANVAS */
+    #canvas-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 0;
+    }
+
+    /* CONTENIDO */
+    .barra {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      padding: 60px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* SELLO */
+    .firma img {
+      height: 40px;
+      margin-bottom: 25px;
+      filter: invert(1);
+    }
+
+    /* MENU SUPERIOR */
+    .top-menu {
+      display: flex;
+      gap: 25px;
+      margin-bottom: 25px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .top-menu a {
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-decoration: none;
+      color: white;
+    }
+
+    /* MENU PRINCIPAL */
+    .menu {
+      display: flex;
+      gap: 60px;
+    }
+
+    .menu a {
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-decoration: none;
+      color: white;
+      cursor: pointer;
+    }
+
+    a:hover {
+      opacity: 0.5;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- CANVAS -->
+  <div id="canvas-container"></div>
+
+  <!-- CONTENIDO -->
+  <div class="barra">
+
+    <div class="firma">
+      <img src="sello.png" alt="firma">
+    </div>
+
+    <div class="top-menu">
+      <a href="#">BIO</a>
+      <a href="#">CONTACTO</a>
+      <a href="#">IG</a>
+      <a href="#">YOUTUBE</a>
+      <a href="mailto:tuemail@gmail.com">CORREO</a>
+      <a href="https://wa.me/57XXXXXXXXXX">WHATSAPP</a>
+    </div>
+
+    <div class="menu">
+      <a>XDXTXRXXL</a>
+      <a>ART PRACTICE</a>
+      <a>APRESTO</a>
+    </div>
+
+  </div>
+
+  <!-- SCRIPT -->
+  <script>
+    let mode = "none";
+    let glow = 0;
+
+    function setup() {
+      let canvas = createCanvas(windowWidth, windowHeight);
+      canvas.parent("canvas-container");
+
+      setupMenu();
+    }
+
+    function draw() {
+      clear();
+
+      stroke(255);
+      noFill();
+      strokeWeight(2);
+
+      // animación suave
+      glow = lerp(glow, mode === "none" ? 0 : 1, 0.05);
+
+      if (mode !== "none") {
+        drawDoor(width / 2, height / 2, glow);
+      }
+    }
+
+    function drawDoor(x, y, g) {
+      let w = 120;
+      let h = 220;
+
+      // marco
+      stroke(255, 200 * g);
+      rectMode(CENTER);
+      rect(x, y, w, h);
+
+      // luz interior
+      noStroke();
+      fill(255, 80 * g);
+      rect(x, y, w - 10, h - 10);
+
+      // brillo exterior
+      stroke(255, 100 * g);
+      noFill();
+      rect(x, y, w + 20 * g, h + 40 * g);
+    }
+
+    function setupMenu() {
+      let links = document.querySelectorAll(".menu a");
+
+      links[0].onmouseover = () => mode = "xdxtxrxxl";
+      links[1].onmouseover = () => mode = "art";
+      links[2].onmouseover = () => mode = "apresto";
+
+      links.forEach(link => {
+        link.onmouseout = () => mode = "none";
+      });
+    }
+
+    function windowResized() {
+      resizeCanvas(windowWidth, windowHeight);
+    }
+  </script>
+
+</body>
+</html>
