@@ -75,11 +75,14 @@
 
 <body>
 
+  <!-- CANVAS -->
   <div id="canvas-container"></div>
 
+  <!-- CONTENIDO -->
   <div class="barra">
+
     <div class="firma">
-      <img src="sello.png">
+      <img src="sello.png" alt="firma">
     </div>
 
     <div class="top-menu">
@@ -87,17 +90,19 @@
       <a href="#">CONTACTO</a>
       <a href="#">IG</a>
       <a href="#">YOUTUBE</a>
-      <a href="#">CORREO</a>
-      <a href="#">WHATSAPP</a>
+      <a href="mailto:tuemail@gmail.com">CORREO</a>
+      <a href="https://wa.me/57XXXXXXXXXX">WHATSAPP</a>
     </div>
 
     <div class="menu">
       <a>XDXTXRXXL</a>
       <a>ART PRACTICE</a>
-      <a>APRESTO</a>
+      <a>ART LABORATORY</a>
     </div>
+
   </div>
 
+  <!-- SCRIPT -->
   <script>
     let mode = "none";
     let glow = 0;
@@ -114,14 +119,14 @@
 
       glow = lerp(glow, mode === "none" ? 0 : 1, 0.05);
 
-      // izquierda
+      // izquierda → XDXTXRXXL
       drawDoor(width * 0.25, height * 0.6, mode === "xdx" ? glow : 0);
 
-      // centro
+      // centro → ART PRACTICE
       drawDoor(width * 0.5, height * 0.6, mode === "art" ? glow : 0);
 
-      // derecha
-      drawDoor(width * 0.75, height * 0.6, mode === "apresto" ? glow : 0);
+      // derecha → ART LABORATORY
+      drawDoor(width * 0.75, height * 0.6, mode === "lab" ? glow : 0);
     }
 
     function drawDoor(x, y, g) {
@@ -145,7 +150,7 @@
 
       links[0].onmouseover = () => mode = "xdx";
       links[1].onmouseover = () => mode = "art";
-      links[2].onmouseover = () => mode = "apresto";
+      links[2].onmouseover = () => mode = "lab";
 
       links.forEach(link => {
         link.onmouseout = () => mode = "none";
