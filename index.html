@@ -111,7 +111,6 @@ function setup() {
   let canvas = createCanvas(windowWidth, windowHeight);
   canvas.parent("canvas-container");
 
-  // crear hojas
   for (let i = 0; i < 80; i++) {
     papers.push({
       x: random(width),
@@ -135,9 +134,11 @@ function draw() {
   if (mode === "munman") drawMunman();
   if (mode === "art") drawPapers();
   if (mode === "xdx") drawXFlow();
+
+  drawCenterObject();
 }
 
-/* BASE */
+/* ===== BASE ===== */
 function drawBase() {
   stroke(255, 40);
 
@@ -152,19 +153,16 @@ function drawBase() {
   }
 }
 
-/* ART PRACTICE → HOJAS */
+/* ===== CAMPOS ===== */
 function drawPapers() {
   noFill();
   stroke(255, 120);
 
   for (let p of papers) {
-
     push();
     translate(p.x, p.y);
     rotate(p.rot);
-
     rect(0, 0, p.size, p.size * 1.4);
-
     pop();
 
     p.y += p.speed;
@@ -178,26 +176,18 @@ function drawPapers() {
   }
 }
 
-/* XDXTXRXXL → X */
 function drawXFlow() {
   stroke(255, 120);
 
   let spacing = 12;
 
-  // diagonal 1
   for (let i = 0; i < width; i += spacing) {
     let y = (i + t * 200) % height;
     line(i, y, i + 200, y + 200);
-  }
-
-  // diagonal 2
-  for (let i = 0; i < width; i += spacing) {
-    let y = (i + t * 200) % height;
     line(i, y, i - 200, y + 200);
   }
 }
 
-/* MUNMAN */
 function drawMunman() {
   stroke(255, 30);
   noFill();
@@ -212,7 +202,38 @@ function drawMunman() {
   }
 }
 
-/* INTERACCIÓN */
+/* ===== OBJETO CENTRAL ===== */
+function drawCenterObject() {
+
+  let x = width / 2;
+  let y = height / 2 + sin(t * 2) * 20;
+
+  push();
+  translate(x, y);
+  rotate(t);
+
+  stroke(255);
+  noFill();
+  strokeWeight(2);
+
+  if (mode === "munman") {
+    ellipse(0, 0, 80);
+  } 
+  else if (mode === "art") {
+    triangle(-40, 40, 40, 40, 0, -40);
+  } 
+  else if (mode === "xdx") {
+    line(-40, -40, 40, 40);
+    line(40, -40, -40, 40);
+  } 
+  else {
+    ellipse(0, 0, 60); // estado base
+  }
+
+  pop();
+}
+
+/* ===== INTERACCIÓN ===== */
 function setupMenu() {
   let links = document.querySelectorAll(".menu a");
 
