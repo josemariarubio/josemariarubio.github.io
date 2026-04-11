@@ -10,88 +10,25 @@
       background: black;
       color: white;
       font-family: Arial, sans-serif;
+      overflow: hidden;
     }
 
-    /* CONTENEDOR GENERAL */
-    .barra {
-      width: 100%;
-      padding: 40px 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+    /* VIDEO FONDO */
+    .video-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      z-index: -2;
     }
 
-    /* SELLO */
-    .firma img {
-      height: 40px;
-      margin-bottom: 20px;
-      filter: invert(1); /* vuelve blanco el sello si es negro */
-    }
-
-    /* MENU SUPERIOR */
-    .top-menu {
-      display: flex;
-      gap: 25px;
-      margin-bottom: 20px;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-
-    .top-menu a {
-      font-size: 11px;
-      letter-spacing: 2px;
-      text-decoration: none;
-      color: white;
-    }
-
-    .top-menu a:hover {
-      opacity: 0.5;
-    }
-
-    /* MENU PRINCIPAL */
-    .menu {
-      display: flex;
-      gap: 60px;
-    }
-
-    .menu a {
-      font-size: 11px;
-      letter-spacing: 3px;
-      text-decoration: none;
-      color: white;
-      cursor: pointer;
-    }
-
-    .menu a:hover {
-      opacity: 0.5;
-    }
-  </style>
-</head>
-
-<body>
-
-  <div class="barra">
-
-    <div class="firma">
-      <img src="sello.png" alt="firma">
-    </div>
-
-    <div class="top-menu">
-      <a href="#">BIO</a>
-      <a href="#">CONTACTO</a>
-      <a href="#">IG</a>
-      <a href="#">YOUTUBE</a>
-      <a href="mailto:tuemail@gmail.com">CORREO</a>
-      <a href="https://wa.me/57XXXXXXXXXX">WHATSAPP</a>
-    </div>
-
-    <div class="menu">
-      <a>XDXTXRXXL</a>
-      <a>ART PRACTICE</a>
-      <a>APRESTO</a>
-    </div>
-
-  </div>
-
-</body>
-</html>
+    /* CAPA OSCURA */
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba
