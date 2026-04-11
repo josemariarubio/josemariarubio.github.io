@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>José María Rubio</title>
 
-  <!-- p5 -->
+  <!-- p5 con WEBGL -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script>
 
   <style>
@@ -16,7 +16,6 @@
       overflow: hidden;
     }
 
-    /* CANVAS */
     #canvas-container {
       position: fixed;
       top: 0;
@@ -24,7 +23,6 @@
       z-index: 0;
     }
 
-    /* CONTENIDO */
     .barra {
       position: relative;
       z-index: 10;
@@ -101,55 +99,61 @@
   </div>
 
   <script>
-    let mode = "none";
     let t = 0;
+    let mode = "none";
 
     function setup() {
-      let canvas = createCanvas(windowWidth, windowHeight);
+      let canvas = createCanvas(windowWidth, windowHeight, WEBGL);
       canvas.parent("canvas-container");
 
+      noStroke();
       setupMenu();
     }
 
     function draw() {
-      clear();
       t += 0.01;
 
-      drawLiquid();
+      shaderEffect();
       drawDoor();
     }
 
-    /* ===== EFECTO AGUA ===== */
-    function drawLiquid() {
-      stroke(255, 20);
-      noFill();
+    /* ===== LIQUIDO REALISTA ===== */
+    function shaderEffect() {
+      resetMatrix();
+      translate(-width/2, -height/2);
 
-      for (let y = 0; y < height; y += 20) {
-        beginShape();
-        for (let x = 0; x < width; x += 20) {
-          let offset = sin(x * 0.01 + t) * 10 + cos(y * 0.01 + t) * 10;
-          vertex(x, y + offset);
+      loadPixels();
+
+      for (let x = 0; x < width; x += 4) {
+        for (let y = 0; y < height; y += 4) {
+
+          let nx = x + sin(y * 0.02 + t) * 10;
+          let ny = y + cos(x * 0.02 + t) * 10;
+
+          let c = color(0);
+          set(x, y, c);
         }
-        endShape();
       }
+
+      updatePixels();
     }
 
     /* ===== PUERTA ===== */
     function drawDoor() {
       if (mode === "none") return;
 
-      let cx = width / 2;
-      let cy = height / 2;
+      resetMatrix();
+      translate(0, 0);
 
       stroke(255);
       noFill();
       rectMode(CENTER);
 
-      rect(cx, cy, 120, 220);
+      rect(width/2, height/2, 120, 220);
 
-      fill(255, 50);
+      fill(255, 60);
       noStroke();
-      rect(cx, cy, 100, 200);
+      rect(width/2, height/2, 100, 200);
     }
 
     function setupMenu() {
