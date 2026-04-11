@@ -88,7 +88,7 @@
 <div class="barra-top">
   <div class="menu">
     <a>MUNMAN</a>
-    <a>ARTPRACTICE</a>
+    <a>ART PRACTICE</a>
     <a>XDXTXRXXL</a>
   </div>
 </div>
@@ -121,10 +121,10 @@ function draw() {
 
   if (mode === "munman") drawMunman();
   if (mode === "art") drawCartesian();
-  if (mode === "xdx") drawWeave();
+  if (mode === "xdx") drawRain();
 }
 
-/* ===== MUNMAN → CAMPO ===== */
+/* ===== MUNMAN ===== */
 function drawMunman() {
   stroke(255, 40);
   noFill();
@@ -139,7 +139,7 @@ function drawMunman() {
   }
 }
 
-/* ===== ARTPRACTICE → PLANO CARTESIANO ===== */
+/* ===== ART PRACTICE ===== */
 function drawCartesian() {
   stroke(255, 60);
   strokeWeight(1);
@@ -157,25 +157,22 @@ function drawCartesian() {
   }
 }
 
-/* ===== XDXTXRXXL → TELAR ===== */
-function drawWeave() {
-  stroke(255, 80);
+/* ===== XDXTXRXXL ===== */
+function drawRain() {
+  stroke(255, 120);
   strokeWeight(1);
 
-  let spacing = 20;
+  let spacing = 10;
 
-  for (let y = 0; y < height; y += spacing) {
-    for (let x = 0; x < width; x += spacing) {
+  for (let x = 0; x < width; x += spacing) {
+    let offset = sin(t * 3 + x * 0.05) * 20;
 
-      let wave = sin(t + x * 0.1 + y * 0.1);
-
-      if ((x + y) % (spacing * 2) === 0) {
-        line(x, y, x + spacing, y + wave * 5);
-      } else {
-        line(x, y + wave * 5, x + spacing, y);
-      }
-
-    }
+    line(
+      x,
+      0 + offset,
+      x,
+      height + offset
+    );
   }
 }
 
