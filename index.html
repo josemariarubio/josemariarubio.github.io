@@ -105,7 +105,7 @@
 </div>
 
 <script>
-let mode = "none";
+let mode = "base";
 let t = 0;
 
 function setup() {
@@ -119,60 +119,73 @@ function draw() {
   clear();
   t += 0.02;
 
+  // BASE SIEMPRE ACTIVA
+  drawCartesianBase();
+
   if (mode === "munman") drawMunman();
-  if (mode === "art") drawCartesian();
-  if (mode === "xdx") drawRain();
+  if (mode === "art") drawCircles();
+  if (mode === "xdx") drawFlow();
 }
 
-/* ===== MUNMAN ===== */
-function drawMunman() {
+/* ===== BASE → RETÍCULA ===== */
+function drawCartesianBase() {
   stroke(255, 40);
-  noFill();
-
-  for (let y = 0; y < height; y += 25) {
-    beginShape();
-    for (let x = 0; x < width; x += 25) {
-      let offset = sin(x * 0.03 + frameCount * 0.1) * 10;
-      vertex(x, y + offset);
-    }
-    endShape();
-  }
-}
-
-/* ===== ART PRACTICE ===== */
-function drawCartesian() {
-  stroke(255, 60);
   strokeWeight(1);
 
   let spacing = 40;
 
   for (let x = 0; x < width; x += spacing) {
-    let offset = sin(t + x * 0.01) * 5;
-    line(x, 0, x, height + offset);
+    line(x, 0, x, height);
   }
 
   for (let y = 0; y < height; y += spacing) {
-    let offset = cos(t + y * 0.01) * 5;
-    line(0, y, width, y + offset);
+    line(0, y, width, y);
   }
 }
 
-/* ===== XDXTXRXXL ===== */
-function drawRain() {
+/* ===== ART PRACTICE → CÍRCULOS ===== */
+function drawCircles() {
+  translate(width/2, height/2);
+
+  stroke(255, 120);
+  noFill();
+
+  for (let i = 0; i < 20; i++) {
+    let r = i * 30 + sin(t + i) * 10;
+    ellipse(0, 0, r);
+
+    rotate(0.01);
+  }
+
+  resetMatrix();
+}
+
+/* ===== XDXTXRXXL → FLUJO VERTICAL ===== */
+function drawFlow() {
   stroke(255, 120);
   strokeWeight(1);
 
-  let spacing = 10;
+  let spacing = 8;
 
   for (let x = 0; x < width; x += spacing) {
-    let offset = sin(t * 3 + x * 0.05) * 20;
+    let offset = (t * 200 + x) % height;
 
-    line(
-      x,
-      0 + offset,
-      x,
-      height + offset
-    );
+    line(x, offset, x, offset + 200);
+  }
+}
+
+/* ===== MUNMAN ===== */
+function drawMunman() {
+  stroke(255, 30);
+  noFill();
+
+  for (let y = 0; y < height; y += 25) {
+    beginShape();
+    for (let x = 0; x < width; x += 25) {
+      let offset = sin(x * 0.02 + t * 5) * 15;
+      vertex(x, y + offset);
+    }
+    endShape();
   }
 }
 
@@ -185,7 +198,7 @@ function setupMenu() {
   links[2].onmouseover = () => mode = "xdx";
 
   links.forEach(link => {
-    link.onmouseout = () => mode = "none";
+    link.onmouseout = () => mode = "base";
   });
 }
 
