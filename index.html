@@ -71,7 +71,7 @@
 
     .firma-bottom img {
       height: 40px;
-      filter: invert(65%) sepia(90%) saturate(500%) hue-rotate(80deg);
+      filter: invert(1);
     }
 
     a:hover {
@@ -110,6 +110,8 @@ let papers = [];
 function setup() {
   let canvas = createCanvas(windowWidth, windowHeight);
   canvas.parent("canvas-container");
+  textAlign(CENTER, CENTER);
+  textSize(60);
 
   for (let i = 0; i < 80; i++) {
     papers.push({
@@ -136,29 +138,31 @@ function draw() {
   }
 
   if (mode === "oracle") drawOracle();
-  if (mode === "art") drawPapers();
+  if (mode === "art") drawArt();
 
   drawCenterObject();
 }
 
-/* ===== BASE ===== */
+/* ===== BASE BLANCO ===== */
 function drawBase() {
-  stroke(0, 255, 120, 80);
+  stroke(255, 80);
 
   let spacing = 40;
 
   for (let x = 0; x < width; x += spacing) {
-    line(x, 0, x, height);
+    let glow = sin(t + x * 0.01) * 20;
+    line(x, 0, x, height + glow);
   }
 
   for (let y = 0; y < height; y += spacing) {
-    line(0, y, width, y);
+    let glow = cos(t + y * 0.01) * 20;
+    line(0, y, width + glow, y);
   }
 }
 
-/* ===== ORACLE ===== */
+/* ===== ORACLE (ROJO) ===== */
 function drawOracle() {
-  stroke(0, 255, 120, 80);
+  stroke(255, 0, 0, 100);
   noFill();
 
   for (let y = 0; y < height; y += 25) {
@@ -171,10 +175,10 @@ function drawOracle() {
   }
 }
 
-/* ===== ART PRACTICE ===== */
-function drawPapers() {
-  noFill();
+/* ===== ART PRACTICE (VERDE) ===== */
+function drawArt() {
   stroke(0, 255, 120, 120);
+  noFill();
 
   for (let p of papers) {
     push();
@@ -194,9 +198,9 @@ function drawPapers() {
   }
 }
 
-/* ===== XDXTXRXXL FONDO ===== */
+/* ===== XDXTXRXXL (AZUL) ===== */
 function drawXBackground() {
-  stroke(0, 255, 120, 80);
+  stroke(0, 150, 255, 120);
 
   let spacing = 30;
 
@@ -216,28 +220,25 @@ function drawCenterObject() {
 
   push();
   translate(x, y);
+  rotate(t * 0.5);
 
-  stroke(0, 255, 120);
-  strokeWeight(2);
-  noFill();
+  textAlign(CENTER, CENTER);
 
   if (mode === "oracle") {
-    ellipse(0, sin(t * 3) * 30, 60);
+    fill(255, 0, 0);
   } 
   else if (mode === "art") {
-    rotate(sin(t) * 0.3);
-    rect(-20, -40, 40, 80);
+    fill(0, 255, 120);
   } 
   else if (mode === "xdx") {
-    let s = 40 + sin(t * 3) * 20;
-    line(-s, -s, s, s);
-    line(s, -s, -s, s);
+    fill(0, 150, 255);
   } 
   else {
-    noStroke();
-    fill(0);
-    ellipse(0, 0, 90);
+    fill(255);
   }
+
+  noStroke();
+  text("HOY", 0, 0);
 
   pop();
 }
