@@ -143,9 +143,9 @@ function draw() {
   drawCenterObject();
 }
 
-/* ===== BASE BLANCO ===== */
+/* ===== BASE VERDE ===== */
 function drawBase() {
-  stroke(255, 80);
+  stroke(0, 255, 120, 80);
 
   let spacing = 40;
 
@@ -175,7 +175,7 @@ function drawOracle() {
   }
 }
 
-/* ===== ART PRACTICE (VERDE) ===== */
+/* ===== ART PRACTICE ===== */
 function drawArt() {
   stroke(0, 255, 120, 120);
   noFill();
@@ -198,7 +198,7 @@ function drawArt() {
   }
 }
 
-/* ===== XDXTXRXXL (AZUL) ===== */
+/* ===== XDXTXRXXL ===== */
 function drawXBackground() {
   stroke(0, 150, 255, 120);
 
@@ -220,25 +220,34 @@ function drawCenterObject() {
 
   push();
   translate(x, y);
-  rotate(t * 0.5);
-
-  textAlign(CENTER, CENTER);
+  rotate(t * 0.3);
 
   if (mode === "oracle") {
-    fill(255, 0, 0);
+    stroke(255,0,0);
+    noFill();
+    // ánfora (simplificada)
+    ellipse(0,0,40,80);
+    ellipse(0,-40,20,20);
+    line(-20,-20,-30,0);
+    line(20,-20,30,0);
   } 
   else if (mode === "art") {
-    fill(0, 255, 120);
+    stroke(0,255,120);
+    noFill();
+    // avión de papel
+    triangle(-40,20,40,0,-20,-20);
   } 
   else if (mode === "xdx") {
-    fill(0, 150, 255);
+    stroke(0,150,255);
+    let s = 40 + sin(t*6)*20;
+    line(-s,-s,s,s);
+    line(s,-s,-s,s);
   } 
   else {
     fill(255);
+    noStroke();
+    text("HOY",0,0);
   }
-
-  noStroke();
-  text("HOY", 0, 0);
 
   pop();
 }
