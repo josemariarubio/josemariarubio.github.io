@@ -22,22 +22,14 @@
       z-index: 0;
     }
 
-    /* ===== BARRA SUPERIOR ===== */
     .barra-top {
       position: fixed;
       top: 0;
       width: 100%;
       padding: 30px 0;
       display: flex;
-      flex-direction: column;
-      align-items: center;
+      justify-content: center;
       z-index: 10;
-    }
-
-    .firma-top img {
-      height: 40px;
-      margin-bottom: 20px;
-      filter: invert(1);
     }
 
     .menu {
@@ -53,7 +45,6 @@
       cursor: pointer;
     }
 
-    /* ===== BARRA INFERIOR ===== */
     .barra-bottom {
       position: fixed;
       bottom: 0;
@@ -79,7 +70,7 @@
     }
 
     .firma-bottom img {
-      height: 30px;
+      height: 40px;
       filter: invert(1);
     }
 
@@ -95,31 +86,22 @@
 
 <!-- SUPERIOR -->
 <div class="barra-top">
-
-  <div class="firma-top">
-    <img src="sello.png">
-  </div>
-
   <div class="menu">
+    <a>ORACLE</a>
     <a>ART</a>
     <a>XDXTXRXXL</a>
-    <a>ORACLE</a>
   </div>
-
 </div>
 
 <!-- INFERIOR -->
 <div class="barra-bottom">
-
   <div class="bottom-menu">
     <a>BIO</a>
     <a>CONTACT</a>
   </div>
-
   <div class="firma-bottom">
     <img src="sello.png">
   </div>
-
 </div>
 
 <script>
@@ -138,8 +120,9 @@ function setup() {
 function draw() {
   clear();
 
-  flash = lerp(flash, mode === "xdx" ? 1 : 0, 0.1);
-  light = lerp(light, mode === "art" ? 1 : 0, 0.1);
+  // 🔁 CAMBIO AQUÍ
+  flash = lerp(flash, mode === "art" ? 1 : 0, 0.1);
+  light = lerp(light, mode === "xdx" ? 1 : 0, 0.1);
   distort = lerp(distort, mode === "oracle" ? 1 : 0, 0.1);
 
   drawFlash();
@@ -147,7 +130,7 @@ function draw() {
   drawDistortion();
 }
 
-/* ===== FLASH FOTO ===== */
+/* FLASH */
 function drawFlash() {
   if (flash < 0.01) return;
 
@@ -156,7 +139,7 @@ function drawFlash() {
   rect(0, 0, width, height);
 }
 
-/* ===== LUZ TECHO ===== */
+/* LUZ */
 function drawLight() {
   if (light < 0.01) return;
 
@@ -172,7 +155,7 @@ function drawLight() {
   }
 }
 
-/* ===== DISTORSIÓN ===== */
+/* ORACLE */
 function drawDistortion() {
   if (distort < 0.01) return;
 
@@ -189,13 +172,12 @@ function drawDistortion() {
   }
 }
 
-/* ===== INTERACCIÓN ===== */
 function setupMenu() {
   let links = document.querySelectorAll(".menu a");
 
-  links[0].onmouseover = () => mode = "art";
-  links[1].onmouseover = () => mode = "xdx";
-  links[2].onmouseover = () => mode = "oracle";
+  links[0].onmouseover = () => mode = "oracle";
+  links[1].onmouseover = () => mode = "art";
+  links[2].onmouseover = () => mode = "xdx";
 
   links.forEach(link => {
     link.onmouseout = () => mode = "none";
