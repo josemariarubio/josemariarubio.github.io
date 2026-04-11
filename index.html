@@ -87,7 +87,7 @@
 <!-- SUPERIOR -->
 <div class="barra-top">
   <div class="menu">
-    <a>ORACLE</a>
+    <a>MUNMAN</a>
     <a>ART</a>
     <a>XDXTXRXXL</a>
   </div>
@@ -107,8 +107,8 @@
 <script>
 let mode = "none";
 let flash = 0;
-let light = 0;
-let distort = 0;
+let ray = 0;
+let grid = 0;
 
 function setup() {
   let canvas = createCanvas(windowWidth, windowHeight);
@@ -120,62 +120,70 @@ function setup() {
 function draw() {
   clear();
 
-  // 🔁 CAMBIO AQUÍ
-  flash = lerp(flash, mode === "art" ? 1 : 0, 0.1);
-  light = lerp(light, mode === "xdx" ? 1 : 0, 0.1);
-  distort = lerp(distort, mode === "oracle" ? 1 : 0, 0.1);
+  flash = lerp(flash, mode === "munman" ? 1 : 0, 0.1);
+  ray = lerp(ray, mode === "xdx" ? 1 : 0, 0.2);
+  grid = lerp(grid, mode === "art" ? 1 : 0, 0.05);
 
-  drawFlash();
-  drawLight();
-  drawDistortion();
+  drawMunman();
+  drawRay();
+  drawGrid();
 }
 
-/* FLASH */
-function drawFlash() {
+/* ===== MUNMAN → DISTORSIÓN SUAVE ===== */
+function drawMunman() {
   if (flash < 0.01) return;
 
-  noStroke();
-  fill(255, 200 * flash);
-  rect(0, 0, width, height);
-}
-
-/* LUZ */
-function drawLight() {
-  if (light < 0.01) return;
-
-  noStroke();
-
-  for (let i = 0; i < 60; i++) {
-    fill(255, 4 * light);
-    triangle(
-      width / 2, 0,
-      width / 2 - i * 15, height,
-      width / 2 + i * 15, height
-    );
-  }
-}
-
-/* ORACLE */
-function drawDistortion() {
-  if (distort < 0.01) return;
-
-  stroke(255, 40 * distort);
+  stroke(255, 40 * flash);
   noFill();
 
-  for (let y = 0; y < height; y += 20) {
+  for (let y = 0; y < height; y += 25) {
     beginShape();
-    for (let x = 0; x < width; x += 20) {
-      let offset = sin(x * 0.05 + frameCount * 0.1) * 10 * distort;
+    for (let x = 0; x < width; x += 25) {
+      let offset = sin(x * 0.03 + frameCount * 0.1) * 10 * flash;
       vertex(x, y + offset);
     }
     endShape();
   }
 }
 
+/* ===== XDXTXRXXL → RAYO ===== */
+function drawRay() {
+  if (ray < 0.05) return;
+
+  stroke(255, 200 * ray);
+  strokeWeight(2);
+
+  let x = random(width);
+
+  line(x, 0, x + random(-20,20), height);
+
+  // desaparece rápido
+  ray *= 0.6;
+}
+
+/* ===== ART → RETÍCULA ===== */
+function drawGrid() {
+  if (grid < 0.01) return;
+
+  stroke(255, 60 * grid);
+  noFill();
+
+  let spacing = 40;
+
+  for (let i = -width; i < width; i += spacing) {
+    line(width/2 + i, height, width/2 + i*0.3, height*0.3);
+  }
+
+  for (let j = 0; j < height; j += spacing) {
+    line(0, j, width, j * 0.7);
+  }
+}
+
+/* ===== INTERACCIÓN ===== */
 function setupMenu() {
   let links = document.querySelectorAll(".menu a");
 
-  links[0].onmouseover = () => mode = "oracle";
+  links[0].onmouseover = () => mode = "munman";
   links[1].onmouseover = () => mode = "art";
   links[2].onmouseover = () => mode = "xdx";
 
