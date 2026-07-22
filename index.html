@@ -1,4 +1,4 @@
-!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -17,6 +17,8 @@
       padding: 30px 0;
       display: flex;
       justify-content: center;
+      background: black;
+      z-index: 100;
     }
     .menu {
       display: flex;
@@ -36,6 +38,8 @@
       padding: 30px 0;
       display: flex;
       justify-content: center;
+      background: black;
+      z-index: 100;
     }
     .firma-bottom img {
       height: 40px;
@@ -44,20 +48,69 @@
     a:hover {
       opacity: 0.5;
     }
+    .lang-toggle {
+      position: fixed;
+      top: 30px;
+      right: 30px;
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: white;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: Arial, sans-serif;
+      opacity: 0.6;
+      z-index: 100;
+    }
+    .lang-toggle:hover {
+      opacity: 1;
+    }
   </style>
 </head>
 <body>
+
+<button class="lang-toggle" id="langToggle">EN</button>
+
 <div class="barra-top">
   <div class="menu">
-    <a href="estudio.html">ESTUDIO</a>
-    <a href="bio-contacto.html">BIO/CONTACTO</a>
-    <a href="portafolio.html">PORTAFOLIO</a>
+    <a href="estudio.html" data-es="ESTUDIO" data-en="STUDIO">ESTUDIO</a>
+    <a href="bio-contacto.html" data-es="BIO/CONTACTO" data-en="BIO/CONTACT">BIO/CONTACTO</a>
+    <a href="portafolio.html" data-es="PORTAFOLIO" data-en="PORTFOLIO">PORTAFOLIO</a>
   </div>
 </div>
+
+<!-- El contenido propio de esta página (si lo hay) va aquí, en medio -->
+
 <div class="barra-bottom">
   <div class="firma-bottom">
     <img src="sello.png">
   </div>
 </div>
+
+<script>
+  const menuLinks = document.querySelectorAll('.menu a');
+  const toggleBtn = document.getElementById('langToggle');
+
+  function setLang(lang) {
+    menuLinks.forEach(link => {
+      link.textContent = link.getAttribute('data-' + lang);
+    });
+    toggleBtn.textContent = lang === 'es' ? 'EN' : 'ES';
+    document.documentElement.lang = lang;
+    localStorage.setItem('siteLang', lang);
+  }
+
+  const saved = localStorage.getItem('siteLang');
+  const browserLang = navigator.language || navigator.userLanguage;
+  const initialLang = saved || (browserLang.startsWith('es') ? 'es' : 'en');
+
+  setLang(initialLang);
+
+  toggleBtn.addEventListener('click', () => {
+    const current = document.documentElement.lang;
+    setLang(current === 'es' ? 'en' : 'es');
+  });
+</script>
+
 </body>
 </html>
