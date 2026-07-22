@@ -69,6 +69,30 @@
     .lang-toggle:hover {
       opacity: 1;
     }
+    .contenido {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .triangulo {
+      width: clamp(120px, 25vw, 280px);
+      animation: titilar 4s infinite;
+    }
+    @keyframes titilar {
+      0%   { opacity: 1; }
+      2%   { opacity: 0.2; }
+      4%   { opacity: 1; }
+      6%   { opacity: 0.3; }
+      8%   { opacity: 1; }
+      50%  { opacity: 1; }
+      52%  { opacity: 0.15; }
+      54%  { opacity: 1; }
+      70%  { opacity: 1; }
+      72%  { opacity: 0.4; }
+      74%  { opacity: 1; }
+      100% { opacity: 1; }
+    }
   </style>
 </head>
 <body>
@@ -83,7 +107,9 @@
   </div>
 </div>
 
-<!-- El contenido propio de esta página (si lo hay) va aquí, en medio -->
+<div class="contenido">
+  <img src="triangulo.png" class="triangulo" alt="">
+</div>
 
 <div class="barra-bottom">
   <a href="index.html" class="firma-bottom">
