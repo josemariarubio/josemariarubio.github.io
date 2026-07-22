@@ -8,31 +8,24 @@
     * { box-sizing: border-box; }
     body {
       margin: 0;
-      background: black;
-      font-family: Arial, sans-serif;
-      overflow: hidden;
-    }
-
-    /* ---------- Columna izquierda (persiste en toda la navegación) ---------- */
-    .sidebar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      height: 100vh;
-      width: clamp(220px, 20vw, 300px);
       background: white;
       color: black;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      padding: clamp(20px, 3vw, 40px);
+      font-family: Arial, sans-serif;
+    }
+
+    /* ---------- Bloque de navegación (persiste en toda la navegación) ---------- */
+    .nav-block {
+      position: fixed;
+      top: clamp(20px, 3vw, 40px);
+      left: clamp(20px, 3vw, 40px);
       z-index: 50;
-      overflow-y: auto;
+      max-width: clamp(220px, 20vw, 280px);
     }
 
     .icono-logo {
       width: clamp(50px, 5vw, 65px);
       margin-bottom: clamp(20px, 3vw, 30px);
+      display: block;
     }
 
     .nombre {
@@ -92,32 +85,6 @@
       opacity: 0.5;
     }
 
-    .caption {
-      font-size: clamp(10px, 1vw, 13px);
-      line-height: 1.5;
-    }
-
-    .caption .titulo {
-      font-weight: bold;
-    }
-
-    /* ---------- Imagen principal a sangre completa ---------- */
-    .main-image {
-      position: fixed;
-      top: 0;
-      right: 0;
-      height: 100vh;
-      width: calc(100vw - clamp(220px, 20vw, 300px));
-      overflow: hidden;
-    }
-
-    .main-image img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
     /* ---------- Sello fijo, centrado abajo, persiste en toda la navegación ---------- */
     .sello-fijo {
       position: fixed;
@@ -129,7 +96,6 @@
 
     .sello-fijo img {
       width: clamp(40px, 4vw, 55px);
-      filter: invert(1);
     }
 
     /* ---------- Botón de idioma ---------- */
@@ -139,14 +105,13 @@
       right: clamp(15px, 2vw, 25px);
       font-size: clamp(9px, 1vw, 10px);
       letter-spacing: 2px;
-      color: white;
+      color: black;
       background: none;
       border: none;
       cursor: pointer;
       font-family: Arial, sans-serif;
-      opacity: 0.7;
+      opacity: 0.6;
       z-index: 100;
-      mix-blend-mode: difference;
     }
     .lang-toggle:hover {
       opacity: 1;
@@ -157,46 +122,39 @@
 
 <button class="lang-toggle" id="langToggle">EN</button>
 
-<div class="sidebar">
-  <div>
-    <a href="index.html">
-      <img src="triangulo.png" class="icono-logo">
-    </a>
-    <div class="nombre">
-      <div>JOSÉ MARÍA RV</div>
-      <div data-es="ARTISTA VISUAL" data-en="VISUAL ARTIST">ARTISTA VISUAL</div>
-    </div>
-    <nav class="menu-vertical">
-      <div class="menu-item">
-        <span class="menu-top" data-es="ARTE" data-en="ART">ARTE</span>
-        <div class="submenu">
-          <a href="comisiones.html" data-es="COMISIONES" data-en="COMMISSIONS">COMISIONES</a>
-          <a href="proyectos.html" data-es="PROYECTOS" data-en="PROJECTS">PROYECTOS</a>
-        </div>
-      </div>
-      <div class="menu-item">
-        <span class="menu-top" data-es="SALÓN" data-en="SALON">SALÓN</span>
-        <div class="submenu">
-          <a href="notas-de-dibujo.html" data-es="NOTAS DE DIBUJO" data-en="DRAWING NOTES">NOTAS DE DIBUJO</a>
-          <a href="resenas.html" data-es="RESEÑAS" data-en="REVIEWS">RESEÑAS</a>
-        </div>
-      </div>
-      <div class="menu-item">
-        <a class="menu-top" href="proyectos-anteriores.html" data-es="PROYECTOS ANTERIORES" data-en="PREVIOUS PROJECTS">PROYECTOS ANTERIORES</a>
-      </div>
-      <div class="menu-item">
-        <a class="menu-top" href="bio.html" data-es="BIO" data-en="BIO">BIO</a>
-      </div>
-      <div class="menu-item">
-        <a class="menu-top" href="contacto.html" data-es="CONTACTO" data-en="CONTACT">CONTACTO</a>
-      </div>
-    </nav>
+<div class="nav-block">
+  <a href="index.html">
+    <img src="triangulo.png" class="icono-logo">
+  </a>
+  <div class="nombre">
+    <div>JOSÉ MARÍA RV</div>
+    <div data-es="ARTISTA VISUAL" data-en="VISUAL ARTIST">ARTISTA VISUAL</div>
   </div>
-</div>
-
-<div class="main-image">
-  <!-- Reemplaza obra.jpg por la imagen de cada obra -->
-  <img src="obra.jpg" alt="">
+  <nav class="menu-vertical">
+    <div class="menu-item">
+      <span class="menu-top" data-es="ARTE" data-en="ART">ARTE</span>
+      <div class="submenu">
+        <a href="comisiones.html" data-es="COMISIONES" data-en="COMMISSIONS">COMISIONES</a>
+        <a href="proyectos.html" data-es="PROYECTOS" data-en="PROJECTS">PROYECTOS</a>
+      </div>
+    </div>
+    <div class="menu-item">
+      <span class="menu-top" data-es="SALÓN" data-en="SALON">SALÓN</span>
+      <div class="submenu">
+        <a href="notas-de-dibujo.html" data-es="NOTAS DE DIBUJO" data-en="DRAWING NOTES">NOTAS DE DIBUJO</a>
+        <a href="resenas.html" data-es="RESEÑAS" data-en="REVIEWS">RESEÑAS</a>
+      </div>
+    </div>
+    <div class="menu-item">
+      <a class="menu-top" href="proyectos-anteriores.html" data-es="PROYECTOS ANTERIORES" data-en="PREVIOUS PROJECTS">PROYECTOS ANTERIORES</a>
+    </div>
+    <div class="menu-item">
+      <a class="menu-top" href="bio.html" data-es="BIO" data-en="BIO">BIO</a>
+    </div>
+    <div class="menu-item">
+      <a class="menu-top" href="contacto.html" data-es="CONTACTO" data-en="CONTACT">CONTACTO</a>
+    </div>
+  </nav>
 </div>
 
 <div class="sello-fijo">
@@ -232,3 +190,4 @@
 
 </body>
 </html>
+
