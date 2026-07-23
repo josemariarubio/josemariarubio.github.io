@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>José María Rubio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Neonderthaw&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; }
     body {
@@ -11,6 +13,7 @@
       background: white;
       color: black;
       font-family: Arial, sans-serif;
+      min-height: 100vh;
     }
 
     /* ---------- Bloque de navegación (persiste en toda la navegación) ---------- */
@@ -85,42 +88,102 @@
       opacity: 0.5;
     }
 
-    /* ---------- Sello fijo, centrado abajo, persiste en toda la navegación ---------- */
-    .sello-fijo {
-      position: fixed;
-      bottom: clamp(15px, 2vw, 25px);
+    /* ---------- Contenido: imagen + sello, en flujo normal, fondo blanco ---------- */
+    .contenido {
+      margin-left: clamp(260px, 24vw, 340px);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: clamp(30px, 5vw, 60px) clamp(20px, 4vw, 60px);
+    }
+
+    .imagen-obra {
+      position: relative;
+      width: 100%;
+      max-width: 1000px;
+    }
+
+    .imagen-obra img {
+      width: 100%;
+      display: block;
+    }
+
+    .en-montaje {
+      position: absolute;
+      top: 50%;
       left: 50%;
-      transform: translateX(-50%);
-      z-index: 100;
-    }
-
-    .sello-fijo img {
-      width: clamp(40px, 4vw, 55px);
-    }
-
-    /* ---------- Botón de idioma ---------- */
-    .lang-toggle {
-      position: fixed;
-      top: clamp(15px, 2vw, 25px);
-      right: clamp(15px, 2vw, 25px);
-      font-size: clamp(9px, 1vw, 10px);
+      transform: translate(-50%, -50%) rotate(-3deg);
+      color: #fff;
+      font-family: 'Neonderthaw', cursive;
+      font-size: clamp(40px, 6vw, 80px);
       letter-spacing: 2px;
-      color: black;
-      background: none;
-      border: none;
-      cursor: pointer;
-      font-family: Arial, sans-serif;
-      opacity: 0.6;
-      z-index: 100;
+      white-space: nowrap;
+      animation: neon-titilar 3s infinite;
     }
-    .lang-toggle:hover {
-      opacity: 1;
+
+    @keyframes neon-titilar {
+      0%, 100% {
+        opacity: 1;
+        text-shadow:
+          0 0 5px #fff,
+          0 0 12px #fff,
+          0 0 22px #ff9de2,
+          0 0 45px #ff9de2,
+          0 0 80px #ff53c7;
+      }
+      3% { opacity: 0.3; text-shadow: none; }
+      6% {
+        opacity: 1;
+        text-shadow:
+          0 0 5px #fff,
+          0 0 12px #fff,
+          0 0 22px #ff9de2,
+          0 0 45px #ff9de2,
+          0 0 80px #ff53c7;
+      }
+      7% { opacity: 0.2; text-shadow: none; }
+      9% {
+        opacity: 1;
+        text-shadow:
+          0 0 5px #fff,
+          0 0 12px #fff,
+          0 0 22px #ff9de2,
+          0 0 45px #ff9de2,
+          0 0 80px #ff53c7;
+      }
+      60% {
+        opacity: 1;
+        text-shadow:
+          0 0 5px #fff,
+          0 0 12px #fff,
+          0 0 22px #ff9de2,
+          0 0 45px #ff9de2,
+          0 0 80px #ff53c7;
+      }
+      62% { opacity: 0.15; text-shadow: none; }
+      64% {
+        opacity: 1;
+        text-shadow:
+          0 0 5px #fff,
+          0 0 12px #fff,
+          0 0 22px #ff9de2,
+          0 0 45px #ff9de2,
+          0 0 80px #ff53c7;
+      }
+    }
+
+    .sello {
+      margin-top: clamp(20px, 4vw, 40px);
+    }
+
+    .sello img {
+      width: clamp(40px, 4vw, 55px);
     }
   </style>
 </head>
 <body>
-
-<button class="lang-toggle" id="langToggle">EN</button>
 
 <div class="nav-block">
   <a href="index.html">
@@ -128,67 +191,46 @@
   </a>
   <div class="nombre">
     <div>JOSÉ MARÍA RV</div>
-    <div data-es="ARTISTA VISUAL" data-en="VISUAL ARTIST">ARTISTA VISUAL</div>
+    <div>ARTISTA VISUAL</div>
   </div>
   <nav class="menu-vertical">
     <div class="menu-item">
-      <span class="menu-top" data-es="ARTE" data-en="ART">ARTE</span>
+      <span class="menu-top">ARTE</span>
       <div class="submenu">
-        <a href="comisiones.html" data-es="COMISIONES" data-en="COMMISSIONS">COMISIONES</a>
-        <a href="proyectos.html" data-es="PROYECTOS" data-en="PROJECTS">PROYECTOS</a>
+        <a href="comisiones.html">COMISIONES</a>
+        <a href="proyectos.html">PROYECTOS</a>
       </div>
     </div>
     <div class="menu-item">
-      <span class="menu-top" data-es="SALÓN" data-en="SALON">SALÓN</span>
+      <span class="menu-top">SALÓN</span>
       <div class="submenu">
-        <a href="notas-de-dibujo.html" data-es="NOTAS DE DIBUJO" data-en="DRAWING NOTES">NOTAS DE DIBUJO</a>
-        <a href="resenas.html" data-es="RESEÑAS" data-en="REVIEWS">RESEÑAS</a>
+        <a href="notas-de-dibujo.html">NOTAS DE DIBUJO</a>
+        <a href="resenas.html">RESEÑAS</a>
       </div>
     </div>
     <div class="menu-item">
-      <a class="menu-top" href="proyectos-anteriores.html" data-es="PROYECTOS ANTERIORES" data-en="PREVIOUS PROJECTS">PROYECTOS ANTERIORES</a>
+      <a class="menu-top" href="proyectos-anteriores.html">PROYECTOS ANTERIORES</a>
     </div>
     <div class="menu-item">
-      <a class="menu-top" href="bio.html" data-es="BIO" data-en="BIO">BIO</a>
+      <a class="menu-top" href="bio.html">BIO</a>
     </div>
     <div class="menu-item">
-      <a class="menu-top" href="contacto.html" data-es="CONTACTO" data-en="CONTACT">CONTACTO</a>
+      <a class="menu-top" href="contacto.html">CONTACTO</a>
     </div>
   </nav>
 </div>
 
-<div class="sello-fijo">
-  <a href="index.html">
-    <img src="sello.png">
-  </a>
+<div class="contenido">
+  <div class="imagen-obra">
+    <img src="quebrada.png" alt="">
+    <div class="en-montaje">En montaje</div>
+  </div>
+  <div class="sello">
+    <a href="index.html">
+      <img src="sello.png">
+    </a>
+  </div>
 </div>
-
-<script>
-  const translatable = document.querySelectorAll('[data-es][data-en]');
-  const toggleBtn = document.getElementById('langToggle');
-
-  function setLang(lang) {
-    translatable.forEach(el => {
-      el.textContent = el.getAttribute('data-' + lang);
-    });
-    toggleBtn.textContent = lang === 'es' ? 'EN' : 'ES';
-    document.documentElement.lang = lang;
-    localStorage.setItem('siteLang', lang);
-  }
-
-  const saved = localStorage.getItem('siteLang');
-  const browserLang = navigator.language || navigator.userLanguage;
-  const initialLang = saved || (browserLang.startsWith('es') ? 'es' : 'en');
-
-  setLang(initialLang);
-
-  toggleBtn.addEventListener('click', () => {
-    const current = document.documentElement.lang;
-    setLang(current === 'es' ? 'en' : 'es');
-  });
-</script>
 
 </body>
 </html>
-
-
